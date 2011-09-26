@@ -7,4 +7,3 @@ Constant TRUE = 1
 Constant FALSE = 0
 
 #endif
-
