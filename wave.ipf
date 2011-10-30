@@ -15,7 +15,7 @@ Function Wave_appendRows(wave_in, number_rows_to_add)
     Wave wave_in
     Variable number_rows_to_add
     Variable last_row = Wave_getLastRowIndex(wave_in)
-    InsertPoints/M=0 last_row, number_rows_to_add, wave_in
+    InsertPoints/M=0 last_row+1, number_rows_to_add, wave_in
     return Wave_getLastRowIndex(wave_in)
 End
 
