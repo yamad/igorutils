@@ -44,6 +44,11 @@ Function Wave_getColumnCount(wave_in)
     return DimSize(wave_in, 1)
 End
 
+Function/S Wave_getUniqueName(base_name)
+    String base_name
+    return UniqueName(base_name, 1, 0)
+End
+
 Function Wave2D_getColumnIndex(wave_in, onedim_index)
     // Return the column index in a 2D wave when given a 1D index
     Wave wave_in
