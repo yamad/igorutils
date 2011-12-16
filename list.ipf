@@ -79,4 +79,67 @@ Function/S List_pop(list_in, [list_sep])
     return popped
 End
 
+Function/S List_extend(listA_in, listB_in)
+    String listA_in, listB_in
+    return listA_in + listB_in
+End
+
+Function/S List_unique(list_in, [list_sep])
+    String list_in
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    Variable item_count = List_getLength(list_in)
+    Variable i
+
+    String new_list = ""
+    for (i=0; i<item_count; i+=1)
+        String curr_item = List_getItemByIndex(list_in, i, list_sep=list_sep)
+        if (!List_hasItem(new_list, curr_item))
+            new_list = List_addItem(new_list, curr_item)
+        endif
+    endfor
+    return new_list
+End
+
+Function/S List_sortNumeric(list_in, [list_sep])
+    String list_in
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+    return SortList(list_in, list_sep, 2)
+End
+
+Function List_hasItem(list_in, test_item, [list_sep])
+    String list_in
+    String test_item
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    if (List_getItemIndex(list_in, test_item, list_sep=list_sep) != -1)
+        return 1
+    endif
+    return 0
+End
+
+Function List_getItemIndex(list_in, test_item, [list_sep])
+    String list_in
+    String test_item
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    return WhichListItem(test_item, list_in, list_sep)
+End
+
 #endif
