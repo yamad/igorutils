@@ -49,6 +49,19 @@ Function/S Wave_getUniqueName(base_name)
     return UniqueName(base_name, 1, 0)
 End
 
+Function/WAVE Wave_getSubrange(wave_in, point_min, point_max)
+	Wave wave_in
+	Variable point_min, point_max
+	
+	Duplicate/FREE/R=[point_min,point_max] wave_in, wave_out
+	return wave_out
+End
+
+Function/S Wave_getPath(wave_in)
+    Wave wave_in
+    return GetWavesDataFolder(wave_in, 2)
+End
+
 Function Wave2D_getColumnIndex(wave_in, onedim_index)
     // Return the column index in a 2D wave when given a 1D index
     Wave wave_in
@@ -64,6 +77,11 @@ Function Wave2D_getRowIndex(wave_in, onedim_index, col_index)
 
     Variable row_count = Wave_getRowCount(wave_in)
     return (onedim_index - (col_index * row_count))
+End
+
+Function addWaves(waveA, waveB)
+	Wave waveA, waveB
+	waveB += waveA
 End
 
 #endif

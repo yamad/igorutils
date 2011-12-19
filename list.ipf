@@ -64,6 +64,30 @@ Function/S List_removeItemByIndex(list_in, remove_idx, [list_sep])
     return RemoveListItem(remove_idx, list_in, list_sep)
 End
 
+// Alias for List_getItemByIndex
+Function/S List_getItem(list_in, get_idx, [list_sep])
+    String list_in
+    Variable get_idx
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+    return List_getItemByIndex(list_in, get_idx, list_sep=list_sep)
+End
+
+// Alias for List_removeItemByIndex
+Function/S List_removeItem(list_in, remove_idx, [list_sep])
+    String list_in
+    Variable remove_idx
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif    
+    return List_removeItemByIndex(list_in, remove_idx, list_sep=list_sep)
+End
+
 // Returns the last item of the list and removes it from the input list
 Function/S List_pop(list_in, [list_sep])
     String &list_in
@@ -77,6 +101,25 @@ Function/S List_pop(list_in, [list_sep])
     String popped = List_getItemByIndex(list_in, last_idx, list_sep=list_sep)
     list_in = List_removeItemByIndex(list_in, last_idx, list_sep=list_sep)
     return popped
+End
+
+Function/S List_convertSeparator(list_in, orig_sep, [new_sep])
+    String list_in
+    String orig_sep
+    String new_sep
+
+    if (ParamIsDefault(new_sep))
+        new_sep = LISTSEP
+    endif
+
+    Variable item_count = List_getLength(list_in, list_sep=orig_sep)
+    Variable i
+    String new_list = ""
+    for (i=0; i<item_count; i+=1)
+        String curr_item = List_getItemByIndex(list_in, i, list_sep=orig_sep)
+        new_list = List_addItem(new_list, curr_item, list_sep=new_sep)
+    endfor
+    return new_list
 End
 
 Function/S List_extend(listA_in, listB_in)

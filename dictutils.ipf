@@ -5,7 +5,9 @@
 #ifndef DICTUTILS_INCLUDE
 #define DICTUTILS_INCLUDE
 
+#include "boolean"
 #include "list"
+#include "stringutils"
 
 Function/S Dict_addItem(dict, key, value)
     String dict
@@ -18,6 +20,32 @@ Function/S Dict_getItem(dict, key)
     String dict
     String key
     return StringByKey(key, dict)
+End
+
+Function/S Dict_removeItem(dict, key)
+    String dict
+    String key
+    return RemoveByKey(key, dict)
+End
+
+Function Dict_hasItem(dict, key, value)
+    String dict
+    String key, value
+
+    String item = Dict_getItem(dict, key)
+    if (isStringsEqual(item, value))
+        return TRUE
+    endif
+    return FALSE
+End
+
+Function Dict_hasKey(dict, key)
+    String dict
+    String key
+    if (isStringExists(Dict_getItem(dict, key)))
+        return TRUE
+    endif
+    return FALSE
 End
 
 #endif

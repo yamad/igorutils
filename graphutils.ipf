@@ -5,8 +5,6 @@
 #ifndef GRAPHUTILS_INCLUDE
 #define GRAPHUTILS_INCLUDE
 
-#include "window"
-
 Function/S Graph_getListAll()
     return WinList("*", ";", "WIN:1")
 End
