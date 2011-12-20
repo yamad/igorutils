@@ -1,8 +1,8 @@
 #ifndef DATAFOLDERUTILS_INCLUDE
 #define DATAFOLDERUTILS_INCLUDE
 
-#include "list"
-#include "wave"
+#include "listutils"
+#include "waveutils"
 
 Function DataFolder_countWaves(df_ref)
     DFREF df_ref

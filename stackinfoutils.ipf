@@ -3,7 +3,7 @@
 #ifndef STACKINFOUTILS_INCLUDE
 #define STACKINFOUTILS_INCLUDE
 
-#include "list"
+#include "listutils"
 
 Function/S Stack_getFull()
     String full_stack = GetRTStackInfo(3)

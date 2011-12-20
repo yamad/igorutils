@@ -30,7 +30,7 @@ requires the following line of code::
 Using the `igorutils` wave module, appending a row is more
 straightforward::
 
- #include "wave"
+ #include "waveutils"
  Wave_appendRow(<wave>)
 
 .. _`Igor Pro`: http://www.wavemetrics.com

@@ -1,8 +1,8 @@
 #ifndef WAVELIST_INCLUDE
 #define WAVELIST_INCLUDE
 
-#include "wave"
-#include "list"
+#include "listutils"
+#include "waveutils"
 
 Function/S WaveList_getByPrefix(prefix)
     String prefix

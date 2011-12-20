@@ -5,8 +5,8 @@
 #ifndef DICTUTILS_INCLUDE
 #define DICTUTILS_INCLUDE
 
-#include "boolean"
-#include "list"
+#include "booleanutils"
+#include "listutils"
 #include "stringutils"
 
 Function/S Dict_addItem(dict, key, value)
