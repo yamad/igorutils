@@ -3,6 +3,8 @@
 #ifndef WAVEUTILS_INCLUDE
 #define WAVEUTILS_INCLUDE
 
+#include "booleanutils"
+
 Function Wave_appendRow(wave_in)
     // Add a new row to a wave and return the index of the new row
     Wave wave_in
@@ -77,6 +79,11 @@ Function Wave2D_getRowIndex(wave_in, onedim_index, col_index)
 
     Variable row_count = Wave_getRowCount(wave_in)
     return (onedim_index - (col_index * row_count))
+End
+
+Function isWavesEqual(waveA, waveB)
+    Wave waveA, waveB
+    return EqualWaves(waveA, waveB, -1)
 End
 
 Function addWaves(waveA, waveB)

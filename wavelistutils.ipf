@@ -1,6 +1,7 @@
 #ifndef WAVELIST_INCLUDE
 #define WAVELIST_INCLUDE
 
+#include "dictutils"
 #include "listutils"
 #include "waveutils"
 
@@ -56,6 +57,26 @@ Function/S WaveList_filterByNoteKeyValue(wave_list, key, value)
         endif
     endfor
     return new_list
+End
+
+Function WaveList_isAllEqual(wave_list)
+    // Return true if all waves in the wave list are equal
+    String wave_list
+    Variable wave_count = List_getLength(wave_list)
+
+    if (wave_count == 0)        // an empty list is equal
+        return TRUE
+    endif
+
+    Wave waveA = $(List_getItem(wave_list, 0))
+    Variable i
+    for (i=1; i<wave_count; i+=1)
+        Wave waveB = $(List_getItem(wave_list, i))
+        if (!isWavesEqual(waveA, waveB))
+            return FALSE
+        endif
+    endfor
+    return TRUE
 End
 
 Function WaveList_average(wave_list, outwave_name)
