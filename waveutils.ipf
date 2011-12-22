@@ -83,7 +83,7 @@ End
 
 Function isWavesEqual(waveA, waveB)
     Wave waveA, waveB
-    return EqualWaves(waveA, waveB, -1)
+    return EqualWaves(waveA, waveB, 7)
 End
 
 Function addWaves(waveA, waveB)
