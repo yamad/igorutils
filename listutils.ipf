@@ -5,7 +5,7 @@
 #ifndef LISTUTILS_INCLUDE
 #define LISTUTILS_INCLUDE
 
-Static Strconstant LISTSEP = ";"
+Strconstant LISTSEP = ";"
 
 Function List_getLength(list_in, [list_sep])
     String list_in
