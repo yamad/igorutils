@@ -81,6 +81,39 @@ Function Wave2D_getRowIndex(wave_in, onedim_index, col_index)
     return (onedim_index - (col_index * row_count))
 End
 
+Function/WAVE Wave_getSliceByX(wave_in, start_x, end_x)
+    Wave wave_in
+    Variable start_x, end_x
+    Duplicate/FREE/R=(start_x, end_x) wave_in, wave_out
+    return wave_out
+End
+
+Function/WAVE Wave_getSlice(wave_in, start_pt, end_pt)
+	Wave wave_in
+	Variable start_pt, end_pt
+	Duplicate/FREE/R=[start_pt, end_pt] wave_in, wave_out
+    return wave_out
+End
+
+Function Wave_saveSliceByX(wave_in, start_x, end_x, waveout_name)
+    Wave wave_in
+    Variable start_x, end_x
+    String waveout_name
+    Wave_saveSlice(wave_in, x2pnt(wave_in, start_x), x2pnt(wave_in, end_x), waveout_name)
+End
+
+Function Wave_saveSlice(wave_in, start_pt, end_pt, waveout_name)
+    Wave wave_in
+    Variable start_pt, end_pt
+    String waveout_name
+
+    Wave wave_out = Wave_getSlice(wave_in, start_pt, end_pt)
+    if (WaveExists($(waveout_name)))
+        KillWaves $(waveout_name)
+    endif
+    MoveWave wave_out, $(waveout_name)
+End
+
 Function isWavesEqual(waveA, waveB)
     Wave waveA, waveB
     return EqualWaves(waveA, waveB, 7)
