@@ -90,9 +90,9 @@ Function WaveList_average(wave_list, outwave_name)
 	Variable wave_count = List_getLength(wave_list)
 	outwave /= wave_count
 	
-	String outwave_note
-	sprintf outwave_note, "AveragedWaves:%s", wave_list
-	Note/K outwave, outwave_note
+	//String outwave_note
+	//sprintf outwave_note, "AveragedWaves:%s", wave_list
+	//Note/K outwave, outwave_note
 End
 
 Function WaveList_averageSubrange(wave_list, outwave_name, point_min, point_max)
@@ -104,12 +104,8 @@ Function WaveList_averageSubrange(wave_list, outwave_name, point_min, point_max)
 	WaveList_average(wave_list, outwave_name)
 	Wave outwave = $outwave_name
 	
-	Wave outwave_slice = Wave_getSubrange(outwave, point_min, point_max)
+	Wave outwave_slice = Wave_getSlice(outwave, point_min, point_max)
 	Duplicate/O outwave_slice, outwave
-	
-	String outwave_note
-	sprintf outwave_note, "Slice:%d,%d", point_min, point_max
-	Note outwave, outwave_note
 End
 
 Function Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, func)
@@ -125,8 +121,8 @@ Function Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, func)
 	String currwave_name
 	currwave_name = List_getItem(wave_list, 0)
 	
-	Make/O/N=(numpnts($currwave_name)) $outwave_name
-	Wave outwave = $outwave_name
+    Duplicate/O $(currwave_name) $(outwave_name)
+	Wave outwave = $(outwave_name)
 	outwave = 0
 	
 	Variable wave_count = List_getLength(wave_list)

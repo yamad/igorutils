@@ -92,6 +92,12 @@ Function/WAVE Wave_getSlice(wave_in, start_pt, end_pt)
 	Wave wave_in
 	Variable start_pt, end_pt
 	Duplicate/FREE/R=[start_pt, end_pt] wave_in, wave_out
+
+    String wave_note = Note(wave_in)
+    String point_str
+    sprintf point_str, "%d,%d", start_pt, end_pt
+    wave_note = Dict_addItem(wave_note, "Slice", point_str)
+    Note/K wave_in, wave_note
     return wave_out
 End
 
@@ -164,10 +170,20 @@ Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
     endif
     Variable new_size = floor(((new_end-new_start) / x_interval))
 
-    Make/O/N=(new_size) $(waveout_name)
+    Make/O/D/N=(new_size) $(waveout_name)
     Wave wave_out = $(waveout_name)
     SetScale/P x new_start, x_interval, WaveUnits(wave_in, 0), wave_out
 
     wave_out = mean(wave_in, x-half_window, x+half_window)
+End
+
+Function Wave_clip(wave_in, min_y, max_y, waveout_name)
+    Wave wave_in
+    Variable min_y, max_y
+    String waveout_name
+
+    Duplicate/O wave_in, $(waveout_name)
+    Wave wave_out = $(waveout_name)
+    wave_out = limit(wave_out, min_y, max_y)
 End
 #endif
