@@ -177,6 +177,16 @@ Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
     wave_out = mean(wave_in, x-half_window, x+half_window)
 End
 
+Function Wave_getLastX(wave_in)
+    Wave wave_in
+    return pnt2x(wave_in, Wave_getRowCount(wave_in)-1)
+End
+
+Function Wave_getFirstX(wave_in)
+    Wave wave_in
+    return DimOffset(wave_in, 0)
+End
+
 // Return a clipped copy of wave *wave_in* in a wave named
 // *waveout_name* with values limited to the minimum value *min_y* and
 // maximum value *max_y*. Values outside this range are clipped to
