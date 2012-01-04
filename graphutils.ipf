@@ -25,4 +25,13 @@ Function/S Graph_create([graph_name])
     return Graph_getTopName()
 End
 
+Function GraphLine_createFromWave(wave_in, waveout_name)
+    Wave wave_in
+    String waveout_name
+
+    Duplicate/O/R=[0,1] wave_in, $(waveout_name)
+    Wave wave_out = $(waveout_name)
+    SetScale/I x Wave_getFirstX(wave_in), Wave_getLastX(wave_in), wave_out
+End
+
 #endif
