@@ -97,7 +97,7 @@ Function/WAVE Wave_getSlice(wave_in, start_pt, end_pt)
     String point_str
     sprintf point_str, "%d,%d", start_pt, end_pt
     wave_note = Dict_addItem(wave_note, "Slice", point_str)
-    Note/K wave_in, wave_note
+    Note/K wave_out, wave_note
     return wave_out
 End
 
@@ -177,6 +177,10 @@ Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
     wave_out = mean(wave_in, x-half_window, x+half_window)
 End
 
+// Return a clipped copy of wave *wave_in* in a wave named
+// *waveout_name* with values limited to the minimum value *min_y* and
+// maximum value *max_y*. Values outside this range are clipped to
+// *min_y* and *max_y*.
 Function Wave_clip(wave_in, min_y, max_y, waveout_name)
     Wave wave_in
     Variable min_y, max_y
@@ -186,4 +190,28 @@ Function Wave_clip(wave_in, min_y, max_y, waveout_name)
     Wave wave_out = $(waveout_name)
     wave_out = limit(wave_out, min_y, max_y)
 End
+
+// Return a clipped copy of wave *wave_in* in a wave named
+// *waveout_name* with values limited to the minimum value *min_y* and
+// maximum value *max_y*. Values outside this range are replaced with NaN.
+Function Wave_clipToNaN(wave_in, min_y, max_y, waveout_name)
+    Wave wave_in
+    Variable min_y, max_y
+    String waveout_name
+
+    WaveSlice_clipToNaN(wave_in, 0, Wave_getRowCount(wave_in), min_y, max_y, waveout_name)
+End
+
+Function WaveSlice_clipToNaN(wave_in, start_pt, end_pt, min_y, max_y, waveout_name)
+    Wave wave_in
+    Variable start_pt, end_pt
+    Variable min_y, max_y
+    String waveout_name
+
+    Wave_saveSlice(wave_in, start_pt, end_pt, waveout_name)
+    Wave wave_out = $(waveout_name)
+    wave_out = wave_out[p] < min_y ? NaN : wave_out[p]
+    wave_out = wave_out[p] > max_y ? NaN : wave_out[p]
+End
+
 #endif
