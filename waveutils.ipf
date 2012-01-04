@@ -120,6 +120,14 @@ Function Wave_saveSlice(wave_in, start_pt, end_pt, waveout_name)
     MoveWave wave_out, $(waveout_name)
 End
 
+Function Wave_saveSliceFromGraph(waveout_name)
+    String waveout_name
+    Wave curr_wave = CsrWaveRef(A)
+    Variable start_pt = pcsr(A)
+    Variable end_pt = pcsr(B)
+    Wave_saveSlice(curr_wave, start_pt, end_pt, waveout_name)
+End
+
 Function isWavesEqual(waveA, waveB)
     Wave waveA, waveB
     return EqualWaves(waveA, waveB, 7)
