@@ -128,6 +128,13 @@ Function Wave_saveSliceFromGraph(waveout_name)
     Wave_saveSlice(curr_wave, start_pt, end_pt, waveout_name)
 End
 
+Function Wave_setPointToZeroX(wave_in, new_zero_pt)
+    Wave wave_in
+    Variable new_zero_pt
+
+    SetScale/P x pnt2x(wave_in, 0)-pnt2x(wave_in, new_zero_pt), deltax(wave_in), wave_in
+End
+
 Function isWavesEqual(waveA, waveB)
     Wave waveA, waveB
     return EqualWaves(waveA, waveB, 7)
