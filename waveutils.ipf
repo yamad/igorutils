@@ -64,6 +64,23 @@ Function/S Wave_getPath(wave_in)
     return GetWavesDataFolder(wave_in, 2)
 End
 
+Function/S Wave_getDataUnits(wave_in)
+    Wave wave_in
+    return WaveUnits(wave_in, -1)
+End
+
+Function/S Wave_getRowUnits(wave_in)
+    Wave wave_in
+    return WaveUnits(wave_in, 0)
+End
+
+Function Wave_setDataUnits(wave_in, new_units)
+    Wave wave_in
+    String new_units
+    
+    SetScale d 0, 0, new_units, wave_in
+End
+
 Function Wave2D_getColumnIndex(wave_in, onedim_index)
     // Return the column index in a 2D wave when given a 1D index
     Wave wave_in
