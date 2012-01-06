@@ -79,6 +79,34 @@ Function WaveList_isAllEqual(wave_list)
     return TRUE
 End
 
+Function WaveList_display(wave_list, [graph_name])
+    String wave_list
+    String graph_name
+
+    if (ParamIsDefault(graph_name))
+        graph_name = Graph_create()
+    else
+        graph_name = Graph_create(graph_name=graph_name)
+    endif
+    WaveList_appendToGraph(wave_list, graph_name=graph_name)
+End
+
+Function WaveList_appendToGraph(wave_list, [graph_name])
+    String wave_list
+    String graph_name
+
+    if (ParamIsDefault(graph_name))
+        graph_name = Graph_getTopName()
+    endif
+
+    Variable wave_count = List_getLength(wave_list)
+    Variable i
+    for (i=0; i<wave_count; i+=1)
+        Wave currwave = $(List_getItem(wave_list, i))
+        AppendToGraph/W=$(graph_name) currwave
+    endfor
+End
+
 Function WaveList_average(wave_list, outwave_name)
 	// Return a wave called `outwave_name` containing the average
 	// across all waves in a list of waves
