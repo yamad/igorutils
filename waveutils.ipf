@@ -81,6 +81,34 @@ Function Wave_setDataUnits(wave_in, new_units)
     SetScale d 0, 0, new_units, wave_in
 End
 
+Function Wave_setRowDelta(wave_in, new_delta)
+    Wave wave_in
+    Variable new_delta
+    SetScale/P x Wave_getRowOffset(wave_in), new_delta, wave_in
+End
+
+Function Wave_setRowUnits(wave_in, new_units)
+    Wave wave_in
+    String new_units
+    SetScale/P x Wave_getRowOffset(wave_in), Wave_getRowDelta(wave_in), new_units, wave_in
+End
+
+Function Wave_setRowOffset(wave_in, new_offset)
+    Wave wave_in
+    Variable new_offset
+    SetScale/P x new_offset, Wave_getRowDelta(wave_in), wave_in
+End
+
+Function Wave_getRowDelta(wave_in)
+    Wave wave_in
+    return DimDelta(wave_in, 0)
+End
+
+Function Wave_getRowOffset(wave_in)
+    Wave wave_in
+    return DimOffset(wave_in, 0)
+End
+
 Function Wave2D_getColumnIndex(wave_in, onedim_index)
     // Return the column index in a 2D wave when given a 1D index
     Wave wave_in
