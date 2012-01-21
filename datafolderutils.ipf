@@ -4,6 +4,36 @@
 #include "listutils"
 #include "waveutils"
 
+Function/DF DataFolder_create(dfpath, [overwrite])
+    String dfpath
+    Variable overwrite
+
+    if (ParamIsDefault(overwrite))
+        overwrite = 0
+    endif
+
+    if (overwrite)
+        NewDataFolder/O $(dfpath)
+    else
+        if (DataFolderExists(dfpath))
+            Abort "Given data folder already exists"
+        endif
+        NewDataFolder $(dfpath)
+    endif
+
+    DFREF df_ref = $(dfpath)
+    return df_ref
+End
+
+Function/DF DataFolder_getDFRfromPath(dfpath)
+    String dfpath
+    if (!DataFolderExists(dfpath))
+        Abort "Given data folder does not exist"
+    endif
+    DFREF df_ref = $(dfpath)
+    return df_ref
+End
+
 Function DataFolder_countWaves(df_ref)
     DFREF df_ref
     return CountObjectsDFR(df_ref, 1)
