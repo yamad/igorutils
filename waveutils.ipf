@@ -4,6 +4,8 @@
 #define WAVEUTILS_INCLUDE
 
 #include "booleanutils"
+#include "dictutils"
+#include "numutils"
 
 Function Wave_appendRow(wave_in)
     // Add a new row to a wave and return the index of the new row
@@ -38,12 +40,29 @@ End
 
 Function Wave_getRowCount(wave_in)
     Wave wave_in
-    return DimSize(wave_in, 0)
+    return Wave_getDimSize(wave_in, 0)
 End
 
 Function Wave_getColumnCount(wave_in)
     Wave wave_in
-    return DimSize(wave_in, 1)
+    return Wave_getDimSize(wave_in, 1)
+End
+
+Function Wave_getDimSize(wave_in, dim_num)
+    Wave wave_in
+    Variable dim_num
+
+    if (dim_num > 4)
+        dim_num = 4
+    elseif (dim_num < 0)
+        dim_num = 0
+    endif
+
+    Variable count = DimSize(wave_in, dim_num)
+    if (isNaN(count))
+        count = 0
+    endif
+    return count
 End
 
 Function/S Wave_getUniqueName(base_name)
