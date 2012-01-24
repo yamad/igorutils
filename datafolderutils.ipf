@@ -34,6 +34,20 @@ Function/DF DataFolder_getDFRfromPath(dfpath)
     return df_ref
 End
 
+// Determine if the wave at refpath exists. If it does, then that wave
+// contains one point which stores a DFREF are located. If this wave
+// does not exist then initialize it.
+Function/DF DataFolder_createOrGetHidden(refpath)
+    String refpath
+    Wave/DF/Z df_ptr = $(refpath)
+    if (!WaveExists(df_ptr) || (DataFolderRefStatus(df_ptr[0]) == 0))
+        Make/O/N=1/DF $(refpath)
+        Wave/DF df_ptr = $(refpath)
+        df_ptr[0] = NewFreeDataFolder()
+    endif
+    return df_ptr[0]
+End
+    
 Function DataFolder_countWaves(df_ref)
     DFREF df_ref
     return CountObjectsDFR(df_ref, 1)
