@@ -16,7 +16,9 @@ Function/DF DataFolder_create(dfpath, [overwrite])
         NewDataFolder/O $(dfpath)
     else
         if (DataFolderExists(dfpath))
-            Abort "Given data folder already exists"
+            String err_msg
+            sprintf err_msg, "Given data folder (%s) already exists", dfpath
+            Abort err_msg
         endif
         NewDataFolder $(dfpath)
     endif
@@ -34,6 +36,15 @@ Function/DF DataFolder_getDFRfromPath(dfpath)
     return df_ref
 End
 
+Function/DF DataFolder_createOrGet(dfpath)
+    String dfpath
+    if (!DataFolderExists(dfpath))
+        return DataFolder_create(dfpath)
+    else
+        return DataFolder_getDFRfromPath(dfpath)
+    endif
+End
+
 // Determine if the wave at refpath exists. If it does, then that wave
 // contains one point which stores a DFREF are located. If this wave
 // does not exist then initialize it.
@@ -46,6 +57,18 @@ Function/DF DataFolder_createOrGetHidden(refpath)
         df_ptr[0] = NewFreeDataFolder()
     endif
     return df_ptr[0]
+End
+
+Function isDataFolderExists(df_ref)
+    DFREF df_ref
+
+    if (DataFolderRefStatus(df_ref) != 0)
+        String df_path = DataFolder_getPath(df_ref)
+        if (isStringExists(df_path) && DataFolderExists(df_path))
+            return TRUE
+        endif
+    endif
+    return FALSE
 End
     
 Function DataFolder_countWaves(df_ref)
