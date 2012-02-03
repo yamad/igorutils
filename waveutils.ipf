@@ -4,6 +4,7 @@
 #define WAVEUTILS_INCLUDE
 
 #include "booleanutils"
+#include "listutils"
 #include "dictutils"
 #include "numutils"
 
@@ -301,6 +302,18 @@ Function WaveSlice_clipToNaN(wave_in, start_pt, end_pt, min_y, max_y, waveout_na
     Wave wave_out = $(waveout_name)
     wave_out = wave_out[p] < min_y ? NaN : wave_out[p]
     wave_out = wave_out[p] > max_y ? NaN : wave_out[p]
+End
+
+Function/S Wave_NumsToList(wave_in)
+    Wave wave_in
+
+    String new_list = ""
+    Variable row_count = Wave_getRowCount(wave_in)
+    Variable i
+    for (i=0; i<row_count; i+=1)
+        new_list = List_addItem(new_list, num2str(wave_in[i]))
+    endfor
+    return new_list
 End
 
 #endif
