@@ -304,6 +304,15 @@ Function WaveSlice_clipToNaN(wave_in, start_pt, end_pt, min_y, max_y, waveout_na
     wave_out = wave_out[p] > max_y ? NaN : wave_out[p]
 End
 
+Function Wave_subtract(waveA, waveB, waveout_name)
+    Wave waveA, waveB
+    String waveout_name
+
+    Duplicate/O waveA, $(waveout_name)
+    Wave wave_out = $(waveout_name)
+    wave_out = waveA - waveB
+End
+
 Function/S Wave_NumsToList(wave_in)
     Wave wave_in
 
