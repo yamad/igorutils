@@ -146,6 +146,14 @@ Function Wave2D_getRowIndex(wave_in, onedim_index, col_index)
     return (onedim_index - (col_index * row_count))
 End
 
+Function/WAVE Wave_convert2DToRowIndices(wave_ids, wave_orig)
+    // Given a wave of 2D indices into `wave_orig`, convert input wave to row indices
+    Wave wave_ids, wave_orig
+    Duplicate/FREE wave_ids, wave_out
+    wave_out = Wave2D_getRowIndex(wave_orig, wave_out, Wave2D_getColumnIndex(wave_orig, wave_out))
+    return wave_out
+End
+
 Function/WAVE Wave_getSliceByX(wave_in, start_x, end_x)
     Wave wave_in
     Variable start_x, end_x
