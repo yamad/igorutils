@@ -12,6 +12,14 @@ Function isNaN(var)
     return 0
 End
 
+Function/S Num_complexToString(cmplx_num)
+    Variable/C cmplx_num
+
+    String num_out
+    sprintf num_out, "%.16g + %.16gi", real(cmplx_num), imag(cmplx_num)
+    return num_out
+End
+
 Function SplitUnitPrefixString(unit_str, long_str, short_str)
     String unit_str, &long_str, &short_str
     SplitString/E="^([^(]+)\(([^)]+)\)" unit_str, long_str, short_str
