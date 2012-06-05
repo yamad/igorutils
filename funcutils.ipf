@@ -2,6 +2,7 @@
 #define STRINGUTILS_INCLUDE
 
 #include "booleanutils"
+#include "stringutils"
 
 Function isFunctionExists(in_funcname)
     String in_funcname
@@ -9,6 +10,26 @@ Function isFunctionExists(in_funcname)
         return TRUE
     endif
     return FALSE
+End
+
+// get comment immediately before procedure signature line
+Function/S Func_getDocString(funcname)
+    String funcname
+
+    String proc_text = ProcedureText(funcname)
+    String docstr_re = "^((?:\\s*//\\s*.*?\\r)+)"
+    String out = String_getRegexMatch(proc_text, docstr_re)
+    return out
+End
+
+// get comment immediately after procedure signature line
+Function/S Func_getPostDocString(funcname)
+    String funcname
+
+    String proc_text = ProcedureText(funcname)
+    String docstr_re = "^Function.*?\\r((?:\\s*//\\s*.*?\\r)+)"
+    String out = String_getRegexMatch(proc_text, docstr_re)
+    return out
 End
 
 #endif
