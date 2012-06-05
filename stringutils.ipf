@@ -41,4 +41,13 @@ Function/S String_quoteForLiberalName(string_in)
     return PossiblyQuoteName(string_in)
 End
 
+Function/S String_getRegexMatch(string_in, regex)
+    String string_in
+    String regex
+
+    String output
+    SplitString/E=regex string_in, output
+    return output
+End
+
 #endif
