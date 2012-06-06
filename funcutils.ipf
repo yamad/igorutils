@@ -16,7 +16,7 @@ End
 Function/S Func_getDocString(funcname)
     String funcname
 
-    String proc_text = ProcedureText(funcname)
+    String proc_text = ProcedureText(funcname, -1)
     String docstr_re = "^((?:\\s*//\\s*.*?\\r)+)"
     String out = String_getRegexMatch(proc_text, docstr_re)
     return out
