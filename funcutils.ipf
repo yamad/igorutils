@@ -3,6 +3,7 @@
 
 #include "booleanutils"
 #include "stringutils"
+#include "dictutils"
 
 Function isFunctionExists(in_funcname)
     String in_funcname
@@ -30,6 +31,18 @@ Function/S Func_getPostDocString(funcname)
     String docstr_re = "^Function.*?\\r((?:\\s*//\\s*.*?\\r)+)"
     String out = String_getRegexMatch(proc_text, docstr_re)
     return out
+End
+
+Function/S Func_getFilename(funcname)
+    String funcname
+    String funcinfo = FunctionInfo(funcname)
+    return Dict_getItem(funcinfo, "PROCWIN")
+End
+
+Function Func_getLineNumber(funcname)
+    String funcname
+    String funcinfo = FunctionInfo(funcname)
+    return str2num(Dict_getItem(funcinfo, "PROCLINE"))
 End
 
 #endif
