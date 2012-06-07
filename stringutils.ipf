@@ -50,4 +50,11 @@ Function/S String_getRegexMatch(string_in, regex)
     return output
 End
 
+Function/S String_trim(string_in)
+    String string_in
+
+    String trim_re = "\\s*(\\S(?:.*\\S)?)\\s*"
+    return String_getRegexMatch(string_in, trim_re)
+End
+
 #endif
