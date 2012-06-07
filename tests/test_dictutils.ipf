@@ -9,7 +9,7 @@ End
 
 Function utest_Dict__getstring()
     // Dict_getItem -- gets a string
-    String expected = "key:value;"
+    String dict = "key:value;"
     String result = Dict_getItem(dict, "key")
-    ASSERT_STREQ(expected, result)
+    ASSERT_STREQ("value", result)
 End
