@@ -1,9 +1,6 @@
 #ifndef NUMUTILS_INCLUDE
 #define NUMUTILS_INCLUDE
 
-
-Static strconstant METRIC_PREFIXES = "-24:yocto(y);-18:atto(a);-15:femto(f);-12:pico(p);-9:nano(n);-6:micro(u);-3:milli(m);3:kilo(k);6:mega(M);9:giga(G);12:tera(T);15:peta(P);18:exa(E);21:zetta(Z);24:yotta(Y);"
-
 Function isNaN(var)
     Variable var
     if (numtype(var) == 2)
@@ -20,18 +17,11 @@ Function/S Num_complexToString(cmplx_num)
     return num_out
 End
 
-Function SplitUnitPrefixString(unit_str, long_str, short_str)
-    String unit_str, &long_str, &short_str
-    SplitString/E="^([^(]+)\(([^)]+)\)" unit_str, long_str, short_str
-End
-
-Function/S Num_getUnitPrefix(num)
-    Variable num
-    Variable n = Num_getUnitMagnitude(num)
-    return StringByKey(num2str(n), METRIC_PREFIXES)
-End
-
 Function Num_getUnitMagnitude(num)
+    // Return the order of magnitude for the given number
+    //
+    // Only returns multiples of 3 (as commonly used in SI units
+    // prefixes), and returns a max (min) magnitude of 24 (-24).
     Variable num
 
     Variable exponent = floor(log(num))
