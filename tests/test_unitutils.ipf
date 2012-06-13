@@ -122,24 +122,64 @@ Function utest_Unit__getposprefix()
     EXPECT_STREQ("", Unit_getNumPrefix(1e0))
     EXPECT_STREQ("", Unit_getNumPrefix(1e1))
     EXPECT_STREQ("", Unit_getNumPrefix(1e2))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e3))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e4))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e5))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e6))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e23))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e24))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e30))
+    EXPECT_STREQ("kilo", Unit_getNumPrefix(1e3))
+    EXPECT_STREQ("kilo", Unit_getNumPrefix(1e4))
+    EXPECT_STREQ("kilo", Unit_getNumPrefix(1e5))
+    EXPECT_STREQ("mega", Unit_getNumPrefix(1e6))
+    EXPECT_STREQ("zetta", Unit_getNumPrefix(1e23))
+    EXPECT_STREQ("yotta", Unit_getNumPrefix(1e24))
+    EXPECT_STREQ("yotta", Unit_getNumPrefix(1e30))
 End
 
 Function utest_Unit__getnegprefix()
     // Unit_getNumPrefix -- gets the right negative prefixes
     EXPECT_STREQ("", Unit_getNumPrefix(1e-2))
     EXPECT_STREQ("", Unit_getNumPrefix(1.5e-2))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e-3))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e-4))
-    EXPECT_STREQ("", Unit_getNumPrefix(1.5e-4))
-    EXPECT_STREQ("", Unit_getNumPrefix(1.5e-5))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e-5))
-    EXPECT_STREQ("", Unit_getNumPrefix(1.5e-6))
-    EXPECT_STREQ("", Unit_getNumPrefix(1e-27))
+    EXPECT_STREQ("milli", Unit_getNumPrefix(1e-3))
+    EXPECT_STREQ("micro", Unit_getNumPrefix(1e-4))
+    EXPECT_STREQ("micro", Unit_getNumPrefix(1.5e-4))
+    EXPECT_STREQ("micro", Unit_getNumPrefix(1.5e-5))
+    EXPECT_STREQ("micro", Unit_getNumPrefix(1e-5))
+    EXPECT_STREQ("micro", Unit_getNumPrefix(1.5e-6))
+    EXPECT_STREQ("yocto", Unit_getNumPrefix(1e-27))
+End
+
+Function utest_Unit_scalefac__negshorts()
+    // Unit_getScaleFactor -- supports short units (negative)
+    EXPECT_EQ(1e-3, Unit_getScaleFactor("uA", "mA"))
+    EXPECT_EQ(1e-6, Unit_getScaleFactor("uA", "A"))
+    EXPECT_EQ(1e3, Unit_getScaleFactor("A", "mA"))
+End
+
+Function utest_Unit_scalefac__posshorts()
+    // Unit_getScaleFactor -- supports short units (positive)
+    EXPECT_EQ(1e-3, Unit_getScaleFactor("A", "kA"))
+    EXPECT_EQ(1e3, Unit_getScaleFactor("kA", "A"))
+    EXPECT_EQ(1e6, Unit_getScaleFactor("GA", "kA"))
+End
+
+Function utest_Unit_scalefac__neglongs()
+    // Unit_getScaleFactor -- suports long units (negative)
+    EXPECT_EQ(1e-3, Unit_getScaleFactor("microamp", "milliamp"))
+    EXPECT_EQ(1e-6, Unit_getScaleFactor("microamp", "amp"))
+    EXPECT_EQ(1e3, Unit_getScaleFactor("amp", "milliamp"))
+End
+
+Function utest_Unit_scalefac__poslongs()
+    // Unit_getScaleFactor -- suports long units (positive)
+    EXPECT_EQ(1e-3, Unit_getScaleFactor("amp", "kiloamp"))
+    EXPECT_EQ(1e3, Unit_getScaleFactor("kiloamp", "amp"))
+    EXPECT_EQ(1e6, Unit_getScaleFactor("gigaamp", "kiloamp"))
+End
+
+Function utest_Unit_scalefac__diffbase()
+    // Unit_getScaleFactor -- different base units are not supported
+    EXPECT_EQ(NaN, Unit_getScaleFactor("amp", "s"))
+    EXPECT_EQ(NaN, Unit_getScaleFactor("amp", "giga"))
+End
+
+Function utest_Unit_scale()
+    // Unit_scale -- returns number converted to new scale
+    EXPECT_EQ(100e-6, Unit_scale(100, "mA", "kA"), tol=1e-13)
+    EXPECT_EQ(0.1, Unit_scale(100, "mA", "A"), tol=1e-13)
 End
