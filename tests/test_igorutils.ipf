@@ -3,3 +3,5 @@
 #include "test_funcutils"
 #include "test_dictutils"
 #include "test_rangespec"
+#include "test_graphutils"
+#include "test_windowutils"
