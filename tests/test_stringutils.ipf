@@ -29,3 +29,17 @@ Function utest_String__nointernal()
     ASSERT_STREQ(expected, String_trim(input))
 End
 
+Function utest_String__searchback()
+    // String_searchBack -- finds last occurrence of a string
+    String input = "A A A "
+    EXPECT_EQ(4, String_searchBack(input, "A"))
+    EXPECT_EQ(2, String_searchBack(input, "A", start=3))
+    EXPECT_EQ(0, String_searchBack(input, "A", start=1))
+End
+
+Function utest_String__searchbackempty()
+    // String_searchBack -- returns -1 if no match
+    String input = "A A A "
+    ASSERT_EQ(-1, String_searchBack(input, "B"))
+End
+

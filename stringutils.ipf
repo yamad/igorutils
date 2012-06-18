@@ -50,6 +50,22 @@ Function/S String_getRegexMatch(string_in, regex)
     return output
 End
 
+Function String_searchBack(string_in, find_str, [start])
+    // Return index of last occurrence of `find_str` in `string_in`.
+    //
+    // Searches backwards from the end of `string_in`. Returns index
+    // of first char of `find_str`, or -1 if no match is found.
+    // Optional `start` parameter is the index to start the search
+    // from. If missing, search starts from the end of the string.
+    String string_in
+    String find_str
+    Variable start
+    if (ParamIsDefault(start))
+        start = Inf
+    endif
+    return strsearch(string_in, find_str, start, 1)
+End
+
 Function/S String_trim(string_in)
     String string_in
 
