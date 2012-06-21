@@ -37,29 +37,80 @@ Function GraphLine_createFromWave(wave_in, waveout_name)
 End
 
 Function/S Graph_getAxisList(graph_name, [type])
+    // Return list of axes in the given graph. If string `type` is
+    // specified, return only axes of the given type.
+    //
+    // `type` may be one of: left, right, top, bottom, vertical,
+    // horizontal. Any other string passed to `type` acts as if no
+    // type were specified.
     String graph_name
     String type
 
-    if (ParamIsDefault(type))
-        type = "all"
-    endif
+    String accepted_types = "left;right;top;bottom;vertical;horizontal;"
 
     String axlist = AxisList(graph_name)
-    String filtered_list = ""
-    if (List_hasItem("left;right;top;bottom;", type))
-        Variable list_len = List_getLength(axlist)
-        Variable i
-        for (i=0; i<list_len; i+=1)
-            String caxis = List_getItem(axlist, i)
-            String axinfo = AxisInfo(graph_name, caxis)
-            String axtype = Dict_getItem(axinfo, "AXTYPE")
-            if (isStringsEqual(axtype, type))
-                filtered_list = List_addItem(filtered_list, caxis)
-            endif
-        endfor
-        axlist = filtered_list
+    // return full list, if no type is specified
+    if (ParamIsDefault(type) || !List_hasItem(accepted_types, type))
+        return axlist
     endif
-    return axlist
+
+    String filtered_list = ""
+    String filter_types = ""
+    if (isStringsEqual("vertical", type))
+        filter_types = "left;right;"
+    elseif (isStringsEqual("horizontal", type))
+        filter_types = "top;bottom;"
+    else
+        filter_types = type
+    endif
+
+    Variable list_len = List_getLength(axlist)
+    Variable i
+    for (i=0; i<list_len; i+=1)
+        String caxis = List_getItem(axlist, i)
+        String axinfo = AxisInfo(graph_name, caxis)
+        String axtype = Dict_getItem(axinfo, "AXTYPE")
+        if (List_hasItem(filter_types, axtype))
+            filtered_list = List_addItem(filtered_list, caxis)
+        endif
+    endfor
+    return filtered_list
+End
+
+Function/S Graph_getTraceList(graph_name, [xaxis, yaxis])
+    // Return list of traces in a graph, optionally specified by axis
+    String graph_name
+    String xaxis, yaxis
+
+    String trace_list = TraceNameList(graph_name, ";", 1)
+
+    if (ParamIsDefault(xaxis))
+        xaxis = ""
+    endif
+    if (ParamIsDefault(yaxis))
+        yaxis = ""
+    endif
+
+    // return full list if no filters are specified
+    if (!isStringExists(xaxis) && !isStringExists(yaxis))
+        return trace_list
+    endif
+
+    String filtered_list = ""
+    Variable list_len = List_getLength(trace_list)
+    Variable i
+    for (i=0; i<list_len; i+=1)
+        String ctrace = List_getItem(trace_list, i)
+        String tinfo = TraceInfo(graph_name, ctrace, 0)
+        String cxaxis = Dict_getItem(tinfo, "XAXIS")
+        String cyaxis = Dict_getItem(tinfo, "YAXIS")
+        if (!isStringExists(xaxis) || isStringsEqual(xaxis, cxaxis))
+            if (!isStringExists(yaxis) || isStringsEqual(yaxis, cyaxis))
+                filtered_list = List_addItem(filtered_list, ctrace)
+            endif
+        endif
+    endfor
+    return filtered_list
 End
 
 #endif
