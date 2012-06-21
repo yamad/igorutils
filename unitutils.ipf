@@ -1,9 +1,6 @@
 #ifndef UNITUTILS_INCLUDE
 #define UNITUTILS_INCLUDE
 
-#include "booleanutils"
-#include "dictutils"
-#include "numutils"
 #include "waveutils"
 
 Static strconstant SI_PREFIXES = "-24:yocto;-18:atto;-15:femto;-12:pico;-9:nano;-6:micro;-3:milli;-2:centi;-1:deci;0:;1:deka;2:hecto;3:kilo;6:mega;9:giga;12:tera;15:peta;18:exa;21:zetta;24:yotta;"

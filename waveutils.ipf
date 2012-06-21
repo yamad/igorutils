@@ -3,10 +3,7 @@
 #ifndef WAVEUTILS_INCLUDE
 #define WAVEUTILS_INCLUDE
 
-#include "booleanutils"
-#include "listutils"
 #include "dictutils"
-#include "numutils"
 
 Function Wave_appendRow(wave_in)
     // Add a new row to a wave and return the index of the new row

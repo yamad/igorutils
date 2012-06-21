@@ -1,8 +1,6 @@
 #ifndef WAVELIST_INCLUDE
 #define WAVELIST_INCLUDE
 
-#include "dictutils"
-#include "listutils"
 #include "waveutils"
 
 Function/S WaveList_getByPrefix(prefix)

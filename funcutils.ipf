@@ -1,8 +1,6 @@
 #ifndef STRINGUTILS_INCLUDE
 #define STRINGUTILS_INCLUDE
 
-#include "booleanutils"
-#include "stringutils"
 #include "dictutils"
 
 Function isFunctionExists(in_funcname)

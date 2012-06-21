@@ -1,7 +1,6 @@
 #ifndef DATAFOLDERUTILS_INCLUDE
 #define DATAFOLDERUTILS_INCLUDE
 
-#include "listutils"
 #include "waveutils"
 
 Function/DF DataFolder_create(dfpath, [overwrite])
