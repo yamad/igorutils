@@ -71,7 +71,7 @@ End
 Function/WAVE Wave_getSubrange(wave_in, point_min, point_max)
 	Wave wave_in
 	Variable point_min, point_max
-	
+
 	Duplicate/FREE/R=[point_min,point_max] wave_in, wave_out
 	return wave_out
 End
@@ -79,6 +79,16 @@ End
 Function/S Wave_getPath(wave_in)
     Wave wave_in
     return GetWavesDataFolder(wave_in, 2)
+End
+
+Function/S Wave_getDF(wave_in)
+    Wave wave_in
+    return GetWavesDataFolder(wave_in, 1)
+End
+
+Function/DF Wave_getDFR(wave_in)
+    Wave wave_in
+    return GetWavesDataFolderDFR(wave_in)
 End
 
 Function/S Wave_getDataUnits(wave_in)
@@ -94,7 +104,7 @@ End
 Function Wave_setDataUnits(wave_in, new_units)
     Wave wave_in
     String new_units
-    
+
     SetScale d 0, 0, new_units, wave_in
 End
 
@@ -230,7 +240,7 @@ Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
                                 // points in new wave
     Variable x_avg              // size (in x units) of window to average
                                 // over for each point
-    Variable no_ends            // 
+    Variable no_ends            //
 
     if (ParamIsDefault(no_ends))
         no_ends = 0
@@ -243,7 +253,7 @@ Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
 
     Variable half_window = x_avg / 2
     // Do not allow upsampling or interval values of 0
-    if (x_interval < orig_delta) 
+    if (x_interval < orig_delta)
         x_interval = orig_delta
     endif
 
