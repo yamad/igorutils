@@ -69,7 +69,7 @@ Function isDataFolderExists(df_ref)
     endif
     return FALSE
 End
-    
+
 Function DataFolder_countWaves(df_ref)
     DFREF df_ref
     return CountObjectsDFR(df_ref, 1)

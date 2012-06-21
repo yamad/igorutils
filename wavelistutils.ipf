@@ -112,24 +112,24 @@ Function WaveList_average(wave_list, outwave_name)
 
 	Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, addWaves)
 	Wave outwave = $outwave_name
-	
+
 	Variable wave_count = List_getLength(wave_list)
 	outwave /= wave_count
-	
+
 	//String outwave_note
 	//sprintf outwave_note, "AveragedWaves:%s", wave_list
 	//Note/K outwave, outwave_note
 End
 
 Function WaveList_averageSubrange(wave_list, outwave_name, point_min, point_max)
-	// Return a wave called `outwave_name` containing the average of the 
+	// Return a wave called `outwave_name` containing the average of the
 	// subrange [point_min, point_max] across all waves in a list of waves
 	String wave_list, outwave_name
 	Variable point_min, point_max
-	
+
 	WaveList_average(wave_list, outwave_name)
 	Wave outwave = $outwave_name
-	
+
 	Wave outwave_slice = Wave_getSlice(outwave, point_min, point_max)
 	Duplicate/O outwave_slice, outwave
 End
@@ -137,20 +137,20 @@ End
 Function Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, func)
 	// An algorithm encapsulation function that iterates over a list of waves, applying
 	// a function to each wave in turn, and creates an output wave with the result
-	// 
+	//
 	// The function `func` must return a wave reference and take the input and output waves
 	// as wave references, in that order. See `protofunc_inoutwave` for the function prototype
 	String wave_list
 	String outwave_name
 	FUNCREF protofunc_inoutwave func
-	
+
 	String currwave_name
 	currwave_name = List_getItem(wave_list, 0)
-	
+
     Duplicate/O $(currwave_name) $(outwave_name)
 	Wave outwave = $(outwave_name)
 	outwave = 0
-	
+
 	Variable wave_count = List_getLength(wave_list)
 	Variable i
 	for (i = 0; i < wave_count; i += 1)
