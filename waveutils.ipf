@@ -340,4 +340,64 @@ Function/S Wave_NumsToList(wave_in)
     return new_list
 End
 
+
+// apply full wave rectification to wave_in (in-place)
+// essentially flips all negative values to be positive
+Function Wave_rectifyFull(wave_in, cut, [pol])
+    Wave wave_in
+    Variable cut
+    String pol                  // polarity: "pos" (default) or "neg"
+    if (ParamIsDefault(pol))
+        pol = "pos"
+    endif
+
+    if (cmpstr("neg", pol) == 0) // flip positive values
+        wave_in = wave_in < cut ? wave_in : -wave_in
+    else                        // flip negative values
+        wave_in = wave_in > cut ? wave_in : -wave_in
+    endif
+End
+
+// apply half-wave rectification to wave_in (in-place)
+Function Wave_rectifyHalf(wave_in, cut, [pol])
+    Wave wave_in
+    Variable cut
+    String pol                  // polarity: "pos" (default) or "neg"
+    if (ParamIsDefault(pol))
+        pol = "pos"
+    endif
+
+    if (cmpstr("neg", pol) == 0) // no positive values
+        wave_in = wave_in > cut ? cut : wave_in
+    else                        // no negative values
+        wave_in = wave_in < cut ? cut : wave_in
+    endif
+End
+
+// return the area under the input wave with respect to a given
+// baseline (and between two points)
+Function Wave_integrateWRT(wave_in, baseline, [start_pt, end_pt, polarity])
+    Wave wave_in
+    Variable baseline
+    Variable start_pt, end_pt
+    String polarity
+
+    if (ParamIsDefault(start_pt))
+        start_pt = 0
+    endif
+    if (ParamIsDefault(end_pt))
+        end_pt = Wave_getLastRowIndex(wave_in)
+    endif
+    if (ParamIsDefault(polarity))
+        polarity = "all"
+    endif
+
+    Duplicate/FREE/O/R=[start_pt,end_pt] wave_in, wave_work
+    wave_work -= baseline       // zero at baseline
+    if (cmpstr(polarity, "neg") == 0 || cmpstr(polarity, "pos") == 0)
+        Wave_rectifyHalf(wave_work, 0, pol=polarity)
+    endif
+    return area(wave_work)
+End
+
 #endif
