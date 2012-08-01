@@ -30,4 +30,8 @@ Function/S Window_getParentName(window_name)
     return window_name[sep1+1, sep2-1]
 End
 
+Function/S Window_getListAll()
+    return WinList("*", ";", "")
+End
+
 #endif
