@@ -86,4 +86,35 @@ Function Dict_hasKey(dict, key)
     return FALSE
 End
 
+Function/S Dict_convertKeySep(dict, old_sep, [new_sep, list_sep])
+    String dict
+    String old_sep
+    String new_sep
+    String list_sep
+
+    if (ParamIsDefault(new_sep))
+        new_sep = KEYSEP
+    endif
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    // if separators are the same, nothing to do
+    if (isStringsEqual(old_sep, new_sep))
+        return dict
+    endif
+
+    Variable pair_count = List_getLength(dict, list_sep=list_sep)
+
+    Variable i
+    String dict_out = ""
+    for (i = 0; i < pair_count; i += 1)
+        String curr_pair = List_getItem(dict, i, list_sep=list_sep)
+        curr_pair = ReplaceString(old_sep, curr_pair, new_sep, 0, 1)
+        dict_out = List_addItem(dict_out, curr_pair, list_sep=list_sep)
+    endfor
+    return dict_out
+End
+
 #endif
