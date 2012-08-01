@@ -225,6 +225,12 @@ Function addWaves(waveA, waveB)
 	waveB += waveA
 End
 
+Function addWaves_noNaNs(waveA, waveB)
+    WAVE waveA
+    WAVE waveB
+    waveB += isNaN(waveA) ? 0 : waveA
+End
+
 // Make a new wave named *waveout_name* by reducing the sampling
 // interval to *x_interval* and averaging over windows of size *x_avg*
 // centered over each new point.

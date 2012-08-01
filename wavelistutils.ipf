@@ -138,6 +138,114 @@ Function WaveList_average(wave_list, outwave_name)
 	//Note/K outwave, outwave_note
 End
 
+Function WaveList_avg_varpts(wave_list, outwave_name, outpts_name)
+	// Return a wave called `outwave_name` containing the average
+	// across all waves in a list of waves. Use this version to handle
+	// averaging over a variable number of points for each row, when
+	// not all waves in the list have a valid points everywhere.
+    //
+    // NaNs are ignored. The wave returned at `outpts_name` contains
+    // the number of valid (non-NaN) points that were averaged.
+    String wave_list, outwave_name, outpts_name
+
+	Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, addWaves_noNaNs)
+	Algo_ApplyToWaveListAndRetWave(wave_list, outpts_name, countPoints_nonNaNs)
+	Wave outwave = $outwave_name
+    Wave outpts = $outpts_name
+
+    outwave /= outpts           // divide each point in outwave by the
+                                // number of valid points added for
+                                // that point
+End
+
+Function countPoints_nonNaNs(curr_wave, acc_wave)
+    WAVE curr_wave
+    WAVE acc_wave               // accumulator
+    acc_wave += isNaN(curr_wave) ? 0 : 1
+End
+
+Function WaveList_sdev(wave_list, avg_wave, outwave_name, [pts_wave])
+	// Return a wave called `outwave_name` containing the standard
+	// deviations at each point across all waves in a list of waves
+    //
+    // optional wave `pts_wave` has identical dimensions to `avg_wave`
+    // and holds the number of points averaged for each point in
+    // `avg_wave`. see `WaveList_avg_varpts`.
+	String wave_list
+    Wave avg_wave
+    String outwave_name
+    Wave pts_wave
+
+	String currwave_name
+	currwave_name = List_getItem(wave_list, 0)
+
+    Duplicate/O $(currwave_name) $(outwave_name)
+	Wave outwave = $(outwave_name)
+	outwave = 0
+
+	Variable wave_count = List_getLength(wave_list)
+    if (ParamIsDefault(pts_wave))
+        Make/FREE/N=(Wave_getRowCount(outwave)) pts_wave
+        pts_wave = wave_count
+    endif
+
+	Variable i
+	for (i = 0; i < wave_count; i += 1)
+		currwave_name = List_getItem(wave_list, i)
+		Wave curr_wave = $currwave_name
+		if (!WaveExists(curr_wave))
+			break
+		endif
+        outwave += isNaN(curr_wave) ? 0 : (curr_wave - avg_wave)^2 // square of differences from mean
+	endfor
+
+	outwave /= pts_wave - 1
+    outwave = sqrt(outwave)
+End
+
+Function WaveList_sem(wave_list, sdev_wave, outwave_name)
+    String wave_list
+    Wave sdev_wave
+    String outwave_name
+
+    Variable sample_count = List_getLength(wave_list)
+    Duplicate sdev_wave, $(outwave_name)
+    Wave outwave = $(outwave_name)
+    outwave /= sqrt(sample_count) // std. dev divided by root sample size
+End
+
+Function WaveList_avgSdevSem(wave_list, outwave_prefix, [avg_suff, sdev_suff, sem_suff])
+    String wave_list
+    String outwave_prefix
+    String avg_suff, sdev_suff, sem_suff
+
+    if (ParamIsDefault(avg_suff))
+        avg_suff = "_avg"
+    endif
+    if (ParamIsDefault(sdev_suff))
+        sdev_suff = "_sdev"
+    endif
+    if (ParamIsDefault(sem_suff))
+        sem_suff = "_sem"
+    endif
+
+    String avg_name = outwave_prefix + avg_suff
+    String sdev_name = outwave_prefix + sdev_suff
+    String sem_name = outwave_prefix + sem_suff
+
+    Variable wave_count = List_getLength(wave_list)
+
+    WaveList_average(wave_list, avg_name)
+    Wave avg_wv = $(avg_name)
+
+    WaveList_sdev(wave_list, avg_wv, sdev_name)
+    Wave sdev_wv = $(sdev_name)
+
+    Duplicate sdev_wv, $(sem_name)
+    Wave sem_wv = $(sem_name)
+    sem_wv /= sqrt(wave_count) // std. dev divided by root sample size
+End
+
 Function WaveList_averageSubrange(wave_list, outwave_name, point_min, point_max)
 	// Return a wave called `outwave_name` containing the average of the
 	// subrange [point_min, point_max] across all waves in a list of waves
