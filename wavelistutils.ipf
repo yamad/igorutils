@@ -2,6 +2,7 @@
 #define WAVELIST_INCLUDE
 
 #include "waveutils"
+#include "datafolderutils"
 
 Function/S WaveList_getByPrefix(prefix)
     String prefix
@@ -27,6 +28,22 @@ Function/S WaveList_getByPattern(pattern)
         fullpath_list = List_addItem(fullpath_list, fullpath)
     endfor
     return fullpath_list
+End
+
+Function/S WaveList_getByPatternRecurse(df_name, pattern)
+    String df_name
+    String pattern
+
+    Variable subdf_count = DataFolder_countSubfolders($df_name)
+    String subdf_list = DataFolder_getSubfolderList($df_name)
+
+    String out = WaveList_getByPatternFromDF(df_name, pattern)
+    Variable i
+    for (i=0; i<subdf_count; i+=1)
+        String curr_df = List_getItem(subdf_list, i)
+        out = List_extend(out, WaveList_getByPatternRecurse(curr_df, pattern))
+    endfor
+    return out
 End
 
 Function/S WaveList_getByPatternFromDF(df_name, pattern)
