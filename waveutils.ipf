@@ -406,4 +406,50 @@ Function Wave_integrateWRT(wave_in, baseline, [start_pt, end_pt, polarity])
     return area(wave_work)
 End
 
+Function Wave_getRangeBounds(wave_in, inc, waveout_name, [start_y, end_y, start_pt, end_pt])
+    // Return wave with `n` x-values indicating where `wave_in`
+    // crosses a value `start_y+(p*inc)` (p is a point = 0..n).
+    Wave wave_in
+    Variable inc
+    String waveout_name
+    Variable start_y, end_y
+    Variable start_pt, end_pt
+
+    // use full x range, if none specified
+    if (ParamIsDefault(start_pt))
+        start_pt = 0
+    endif
+    if (ParamIsDefault(end_pt))
+        end_pt = Wave_getLastRowIndex(wave_in)
+    endif
+    Variable start_x = pnt2x(wave_in, start_pt)
+    Variable end_x = pnt2x(wave_in, end_pt)
+
+    // find full y range, if none specified
+    WaveStats/Q/R=[start_pt, end_pt] wave_in
+    if (ParamIsDefault(start_y))
+        start_y = V_min
+    endif
+    if (ParamIsDefault(end_y))
+        end_y = V_max
+    endif
+
+    // evenly divide range
+    Variable npnts = ((end_y - start_y) / inc)
+    npnts += 1                  // add end point
+    Make/O/N=(npnts) $(waveout_name)
+    Wave wave_out = $(waveout_name)
+
+    Variable i=0
+    Variable iy
+    Variable ix = start_x
+    for (iy=start_y; iy<end_y; iy+=inc)
+        FindLevel/Q/R=(ix,end_x) wave_in, iy
+        wave_out[i] = V_LevelX
+        i+=1
+        ix = V_LevelX
+    endfor
+    wave_out[i] = V_maxLoc      // add end point
+End
+
 #endif
