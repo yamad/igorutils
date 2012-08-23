@@ -207,4 +207,25 @@ Function List_getItemIndex(list_in, test_item, [list_sep])
     return WhichListItem(test_item, list_in, list_sep)
 End
 
+Function/S List_getSlice(list_in, start_idx, end_idx, [list_sep])
+    String list_in
+    Variable start_idx, end_idx
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    Variable orig_len = List_getLength(list_in)
+    start_idx = max(start_idx, 0)
+    end_idx = min(end_idx, orig_len-1)
+
+    Variable i
+    String new_list = ""
+    for (i=start_idx; i<=end_idx; i+=1)
+        new_list = List_addItem(new_list, List_getItem(list_in, i))
+    endfor
+    return new_list
+End
+
 #endif
