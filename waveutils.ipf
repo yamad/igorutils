@@ -510,4 +510,30 @@ Function/WAVE Wave_intersect(a, b)
     Sort res, res
     return res
 End
+
+Function Wave_pruneNaN(wave_in, outwave_name)
+    Wave wave_in
+    String outwave_name
+    Extract/O wave_in, $(outwave_name), (!isNaN(wave_in))
+End
+
+Function/WAVE Wave_indexNonNaN(wave_in)
+    Wave wave_in
+    Extract/FREE/INDX wave_in, res, (!isNaN(wave_in))
+    return res
+End
+
+Function Wave_pruneValue(wave_in, prune_val, outwave_name)
+    Wave wave_in
+    Variable prune_val
+    String outwave_name
+    Extract/O wave_in, $(outwave_name), (wave_in != prune_val)
+End
+
+Function Wave_averageNonNaN(wave_in)
+    Wave wave_in
+    Extract/FREE wave_in, res, (!isNaN(wave_in))
+    return mean(res)
+End
+
 #endif
