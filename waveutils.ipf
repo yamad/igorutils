@@ -452,4 +452,62 @@ Function Wave_getRangeBounds(wave_in, inc, waveout_name, [start_y, end_y, start_
     wave_out[i] = V_maxLoc      // add end point
 End
 
+Function/WAVE Wave_union(a, b)
+    Wave a
+    Wave b
+
+    Variable a_len = Wave_getRowCount(a)
+    Variable b_len = Wave_getRowCount(b)
+    Variable max_len = a_len + b_len
+    Make/FREE/N=(max_len) res
+
+    res = a                     // fill result with all a values
+    Variable i = 0
+    Variable n = a_len
+    for (i=0; i<b_len; i+=1) // fill result with new b values
+        FindValue/V=(b[i]) a
+        if (V_value == -1)      // novel value
+            res[n] = b[i]
+            n += 1
+        endif
+    endfor
+    Redimension/N=(n) res
+    Sort res, res
+    return res
+End
+
+Function/WAVE Wave_intersect(a, b)
+    Wave a
+    Wave b
+
+    Variable a_len = Wave_getRowCount(a)
+    Variable b_len = Wave_getRowCount(b)
+    Variable max_len = max(a_len, b_len)
+    Make/FREE/N=(max_len) res
+
+    Variable other_len
+    if (a_len == max_len)
+        Wave this = a
+        Wave other = b
+        other_len = b_len
+    else
+        Wave this = b
+        Wave other = a
+        other_len = a_len
+    endif
+
+    Variable n = 0
+    Variable i
+    for (i=0; i<other_len; i+=1)
+        Variable val = other[i]
+        FindValue/V=(val) this
+        if (V_value != -1)
+            res[n] = val
+            n += 1
+        endif
+    endfor
+    Redimension/N=(n) res
+    Sort res, res
+    return res
+End
 #endif
