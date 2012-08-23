@@ -60,7 +60,7 @@ Function/S List_removeItemByIndex(list_in, remove_idx, [list_sep])
 
     if (ParamIsDefault(list_sep))
         list_sep = LISTSEP
-    endif    
+    endif
     return RemoveListItem(remove_idx, list_in, list_sep)
 End
 
@@ -76,6 +76,28 @@ Function/S List_getItem(list_in, get_idx, [list_sep])
     return List_getItemByIndex(list_in, get_idx, list_sep=list_sep)
 End
 
+Function/S List_getSlice(list_in, start_idx, end_idx, [list_sep])
+    String list_in
+    Variable start_idx
+    Variable end_idx
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    Variable list_len = List_getLength(list_in)
+    start_idx = max(start_idx, 0)
+    end_idx = min(end_idx, list_len-1)
+
+    Variable i
+    String new_list = ""
+    for (i=start_idx; i<=end_idx; i+=1)
+        new_list = List_addItem(new_list, List_getItem(list_in, i))
+    endfor
+    return new_list
+End
+
 // Alias for List_removeItemByIndex
 Function/S List_removeItem(list_in, remove_idx, [list_sep])
     String list_in
@@ -84,7 +106,7 @@ Function/S List_removeItem(list_in, remove_idx, [list_sep])
 
     if (ParamIsDefault(list_sep))
         list_sep = LISTSEP
-    endif    
+    endif
     return List_removeItemByIndex(list_in, remove_idx, list_sep=list_sep)
 End
 
@@ -95,7 +117,7 @@ Function/S List_pop(list_in, [list_sep])
 
     if (ParamIsDefault(list_sep))
         list_sep = LISTSEP
-    endif    
+    endif
 
     Variable last_idx = List_getLength(list_in, list_sep=list_sep) - 1
     String popped = List_getItemByIndex(list_in, last_idx, list_sep=list_sep)

@@ -5,3 +5,4 @@
 #include "test_rangespec"
 #include "test_graphutils"
 #include "test_windowutils"
+#include "test_listutils"
