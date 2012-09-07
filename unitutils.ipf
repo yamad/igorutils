@@ -145,6 +145,7 @@ Function Unit_scaleWaveRow(wave_in, new_units)
 
     Variable sf = Unit_getScaleFactor(old_units, new_units)
     Wave_setRowUnits(wave_in, new_units)
+    Wave_setRowOffset(wave_in, Wave_getRowOffset(wave_in) * sf)
     Wave_setRowDelta(wave_in, Wave_getRowDelta(wave_in) * sf)
     return 0
 End

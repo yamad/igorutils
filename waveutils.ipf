@@ -536,4 +536,11 @@ Function Wave_averageNonNaN(wave_in)
     return mean(res)
 End
 
+Function Wave_count(wave_in, val)
+    Wave wave_in
+    Variable val
+    Extract/FREE wave_in, res, (wave_in == val)
+    return numpnts(res)
+End
+
 #endif
