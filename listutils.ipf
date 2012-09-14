@@ -64,6 +64,22 @@ Function/S List_removeItemByIndex(list_in, remove_idx, [list_sep])
     return RemoveListItem(remove_idx, list_in, list_sep)
 End
 
+Function/S List_removeItemByString(list_in, remove_str, [list_sep])
+    String list_in
+    String remove_str
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    Variable remove_idx = List_getItemIndex(list_in, remove_str, list_sep=list_sep)
+    if (remove_idx == -1)
+        return list_in
+    endif
+    return List_removeItemByIndex(list_in, remove_idx, list_sep=list_sep)
+End
+
 // Alias for List_getItemByIndex
 Function/S List_getItem(list_in, get_idx, [list_sep])
     String list_in
