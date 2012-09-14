@@ -209,7 +209,7 @@ Function WaveList_sem(wave_list, sdev_wave, outwave_name)
     String outwave_name
 
     Variable sample_count = List_getLength(wave_list)
-    Duplicate sdev_wave, $(outwave_name)
+    Duplicate/O sdev_wave, $(outwave_name)
     Wave outwave = $(outwave_name)
     outwave /= sqrt(sample_count) // std. dev divided by root sample size
 End
@@ -241,7 +241,7 @@ Function WaveList_avgSdevSem(wave_list, outwave_prefix, [avg_suff, sdev_suff, se
     WaveList_sdev(wave_list, avg_wv, sdev_name)
     Wave sdev_wv = $(sdev_name)
 
-    Duplicate sdev_wv, $(sem_name)
+    Duplicate/O sdev_wv, $(sem_name)
     Wave sem_wv = $(sem_name)
     sem_wv /= sqrt(wave_count) // std. dev divided by root sample size
 End
