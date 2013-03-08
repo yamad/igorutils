@@ -543,4 +543,10 @@ Function Wave_count(wave_in, val)
     return numpnts(res)
 End
 
+Function Wave_normMax(wave_in)
+    Wave wave_in
+    Variable wmax = WaveMax(wave_in)
+    wave_in = wave_in / wmax
+End
+
 #endif
