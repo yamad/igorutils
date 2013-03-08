@@ -94,6 +94,18 @@ Function WaveList_isAllEqual(wave_list)
     return TRUE
 End
 
+Function WaveList_kill(wave_list)
+    // Kill all waves in the wave list
+    String wave_list
+    Variable wave_count = List_getLength(wave_list)
+
+    Variable i
+    for (i=0; i<wave_count; i+=1)
+        Wave curwv = $(List_getItem(wave_list, i))
+        KillWaves curwv
+    endfor
+End
+
 Function WaveList_display(wave_list, [graph_name])
     String wave_list
     String graph_name
