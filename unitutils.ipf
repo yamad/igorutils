@@ -8,7 +8,7 @@ Static strconstant SI_MAGNITUDES = "yocto:-24;atto:-18;femto:-15;pico:-12;nano:-
 Static strconstant SI_1toLPREFIX = "y:yocto;a:atto;f:femto;p:pico;n:nano;u:micro;m:milli;c:centi;d:deci;da:deka;h:hecto;k:kilo;M:mega;G:giga;T:tera;P:peta;E:exa;Z:zetta;Y:yotta;"
 Static strconstant SI_Lto1PREFIX = "yocto:y;atto:a;femto:f;pico:p;nano:n;micro:u;milli:m;centi:c;deci:d;deca:da;deka:da;hecto:h;kilo:k;mega:M;giga:G;tera:T;peta:P;exa:E;zetta:Z;yotta:Y;"
 Static Strconstant prefix_re = "([MGTPEZYu]|y(octo|otta)?|a(tto)?|f(emto)?|p(ico|eta)?|n(ano)?|m(icro|illi|ega)?|c(enti)?|k(ilo)?|d(a|e(c[ai]|ka))?|h(ecto)?|giga|tera|exa|zetta)"
-Static Strconstant UNIT_REGISTRY = "m;meter;g;gram;s;sec;second;A;ampere;amp;K;kelvin;mol;mole;cd;candela;deg;degree;rad;radian;Hz;hertz;Pa;pascal;N;newton;J;joule;W;watt;C;coulomb;V;volt;F;farad;ohm;mho;S;siemens;min;minute;h;hour;d;day;L;liter;litre;dB;decibel;Da;dalton;atm;atmosphere;micron"
+Static Strconstant UNIT_REGISTRY = "m;meter;g;gram;s;sec;second;A;ampere;amp;K;kelvin;mol;mole;cd;candela;deg;degree;rad;radian;Hz;hertz;Pa;pascal;N;newton;J;joule;W;watt;C;coulomb;V;volt;F;farad;ohm;Ohm;mho;S;siemens;min;minute;h;hour;d;day;L;liter;litre;dB;decibel;Da;dalton;atm;atmosphere;micron"
 
 Function/S Unit_getNumPrefix(num)
     // Get the appropriate SI unit prefix for the given number
