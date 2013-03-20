@@ -215,9 +215,18 @@ Function Wave_setPointToZeroX(wave_in, new_zero_pt)
     SetScale/P x pnt2x(wave_in, 0)-pnt2x(wave_in, new_zero_pt), deltax(wave_in), wave_in
 End
 
+///
+// Compares wave data for equality
+//
+// Ignores all other aspects of waves for now, including wave scaling,
+// units, etc. The built-in EqualWaves returns true if either wave
+// contains a zero point, so does not work for this purpose!
 Function isWavesEqual(waveA, waveB)
     Wave waveA, waveB
-    return EqualWaves(waveA, waveB, 7)
+    Duplicate/FREE waveA, comparator
+    comparator = waveA - waveB
+    comparator = comparator > 1e-12 || comparator < -1e-12 ? 1 : 0
+    return (sum(comparator) == 0)
 End
 
 Function addWaves(waveA, waveB)
