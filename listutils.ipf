@@ -164,6 +164,17 @@ Function/S List_unique(list_in, [list_sep])
     return new_list
 End
 
+// Return a sorted version (ascending alphabetic) of list `list_in`
+Function/S List_sort(list_in, [list_sep])
+    String list_in
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+    return SortList(list_in, list_sep, 0)
+End
+
 Function/S List_sortNumeric(list_in, [list_sep])
     String list_in
     String list_sep
