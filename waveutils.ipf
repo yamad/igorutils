@@ -188,6 +188,40 @@ Function Wave_saveSliceByX(wave_in, start_x, end_x, waveout_name)
     Wave_saveSlice(wave_in, x2pnt(wave_in, start_x), x2pnt(wave_in, end_x), waveout_name)
 End
 
+/// Store a wave reference to a new location
+//
+// In particular, useful for saving a free wave.
+//
+// @param path      path for where to save new wave (e.g. root:folder:wavename)
+// @param overwrite (default: false) if "true", overwrites existing waves
+// @returns 0, if successful. -1, for error.
+Function Wave_store(wave_in, path, [overwrite])
+    Wave wave_in
+    String path
+    Variable overwrite
+
+    if (ParamIsDefault(overwrite))
+        overwrite = 0
+    endif
+
+    // trying to store wave to itself is a no-op
+    String old_path = Wave_getPath(wave_in)
+    if (isStringsEqual(old_path, path))
+        return 0
+    endif
+
+    if (overwrite && WaveExists($(path)))
+        KillWaves $(path)
+    endif
+
+    if (!WaveExists($(path)))
+        MoveWave wave_in, $(path)
+        return 0
+    endif
+
+    return -1                   // encountered some error
+End
+
 Function Wave_saveSlice(wave_in, start_pt, end_pt, waveout_name)
     Wave wave_in
     Variable start_pt, end_pt
