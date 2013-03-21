@@ -80,6 +80,10 @@ Function DataFolder_countSubfolders(df_ref)
 	return CountObjectsDFR(df_ref, 4)
 End
 
+Function/S DataFolder_currentPath()
+    return DataFolder_getPath(:)
+End
+
 Function/S DataFolder_getPath(df_ref)
     DFREF df_ref
     return GetDataFolder(1, df_ref)

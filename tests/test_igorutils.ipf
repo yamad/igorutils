@@ -6,3 +6,5 @@
 #include "test_graphutils"
 #include "test_windowutils"
 #include "test_listutils"
+#include "test_datafolderutils"
+#include "test_refpathutils"
