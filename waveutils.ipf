@@ -4,6 +4,7 @@
 #define WAVEUTILS_INCLUDE
 
 #include "dictutils"
+#include "refpathutils"
 
 Function Wave_appendRow(wave_in)
     // Add a new row to a wave and return the index of the new row
@@ -195,6 +196,8 @@ End
 // @param path      path for where to save new wave (e.g. root:folder:wavename)
 // @param overwrite (default: false) if "true", overwrites existing waves
 // @returns 0, if successful. -1, for error.
+//
+// TODO: allow for paths that do not exist yet
 Function Wave_store(wave_in, path, [overwrite])
     Wave wave_in
     String path
@@ -206,16 +209,17 @@ Function Wave_store(wave_in, path, [overwrite])
 
     // trying to store wave to itself is a no-op
     String old_path = Wave_getPath(wave_in)
-    if (isStringsEqual(old_path, path))
+    String new_path = RefPath_resolve(path)
+    if (isStringsEqual(old_path, new_path))
         return 0
     endif
 
-    if (overwrite && WaveExists($(path)))
-        KillWaves $(path)
+    if (overwrite && WaveExists($(new_path)))
+        KillWaves $(new_path)
     endif
 
-    if (!WaveExists($(path)))
-        MoveWave wave_in, $(path)
+    if (!WaveExists($(new_path)))
+        MoveWave wave_in, $(new_path)
         return 0
     endif
 

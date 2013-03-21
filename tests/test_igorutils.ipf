@@ -8,3 +8,4 @@
 #include "test_listutils"
 #include "test_datafolderutils"
 #include "test_refpathutils"
+#include "test_waveutils"
