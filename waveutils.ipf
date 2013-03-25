@@ -22,6 +22,22 @@ Function Wave_appendRows(wave_in, number_rows_to_add)
     return Wave_getLastRowIndex(wave_in)
 End
 
+Function Wave_appendColumns(wave_in, add_n)
+    Wave wave_in
+    Variable add_n
+    return Wave_appendToDimension(wave_in, add_n, 1)
+End
+
+Function Wave_appendToDimension(wave_in, add_n, dim_num)
+    Wave wave_in
+    Variable add_n
+    Variable dim_num
+
+    Variable dim_size = Wave_getDimSize(wave_in, dim_num)
+    InsertPoints/M=(dim_num) dim_size, add_n, wave_in
+    return dim_size
+End
+
 Constant WAVEEXPAND_FACTOR = 0.1
 Function Wave_expandRows(wave_in)
     // Adds a number of rows proportional to the total number of rows
@@ -256,14 +272,27 @@ End
 ///
 // Compares wave data for equality
 //
-// Ignores all other aspects of waves for now, including wave scaling,
-// units, etc. The built-in EqualWaves returns true if either wave
-// contains a zero point, so does not work for this purpose!
-Function isWavesEqual(waveA, waveB)
+// Checks wave data type, dimensions, and data. Currently ignores all
+// other aspects of waves for the purposes of equality. The built-in
+// EqualWaves returns true if either wave contains a zero point, so
+// does not work for comparing data!
+Function isWavesEqual(waveA, waveB, [tol])
     Wave waveA, waveB
+    Variable tol
+
+    if (ParamIsDefault(tol))
+        tol = 1e-12
+    endif
+
+    // compare data type and dimensions
+    if (!EqualWaves(waveA, waveB, 514))
+        return 0
+    endif
+
+    // compare data
     Duplicate/FREE waveA, comparator
     comparator = waveA - waveB
-    comparator = comparator > 1e-12 || comparator < -1e-12 ? 1 : 0
+    comparator = comparator > tol || comparator < tol ? 1 : 0
     return (sum(comparator) == 0)
 End
 
@@ -594,6 +623,74 @@ Function Wave_normMax(wave_in)
     Wave wave_in
     Variable wmax = WaveMax(wave_in)
     wave_in = wave_in / wmax
+End
+
+/// Returns point number where wave value changes from start point
+//
+// @param wave_in  wave to search
+// @param start_pt (default: 0) start search from this point
+// @param tol      (default: 1e-8) tolerance, value must change by more than this
+// @returns point number of change, or -1 if no change found
+Function Wave_findNextChange(wave_in, [start_pt, tol])
+    Wave wave_in
+    Variable start_pt
+    Variable tol
+
+    if (ParamIsDefault(tol))
+        tol = 1e-8
+    endif
+    if (ParamIsDefault(start_pt))
+        start_pt = 0
+    endif
+
+    Duplicate/FREE/R=[start_pt, numpnts(wave_in)] wave_in, wdiff
+    Variable diff_value = wdiff[0]
+    wdiff = abs(wdiff - diff_value)
+
+    FindLevel/P/Q wdiff, abs(tol)
+    if (V_flag == 1)            // no change found
+        return -1
+    endif
+    return ceil(V_LevelX+start_pt)
+End
+
+/// Returns point number at which a consecutive run of at least `num` equal values
+//
+// @param wave_in  wave to search
+// @param num      number of points that must be equal
+// @param start_pt (default: 0) start search from this point
+// @param tol      (default: 1e-8) tolerance, value must change by more than this
+// @returns point number of change, or -1 if no change found
+Function Wave_findConsec(wave_in, num, [start_pt, tol])
+	Wave wave_in
+	Variable num
+	Variable start_pt
+    Variable tol
+
+    if (ParamIsDefault(start_pt))
+        start_pt = 0
+    endif
+    if (ParamIsDefault(tol))
+        tol = 0
+    endif
+
+	Variable i
+	Variable n = 1
+    Variable val = wave_in[start_pt]
+
+    for (i=start_pt+1; i<numpnts(wave_in); i+=1)
+        if (abs(val - wave_in[i]) <= abs(tol))
+            n += 1
+        else
+            n = 1
+            val = wave_in[i]
+        endif
+
+        if (n == num)
+            return (i - (num-1))
+        endif
+    endfor
+    return -1
 End
 
 #endif
