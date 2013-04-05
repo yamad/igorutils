@@ -291,8 +291,8 @@ Function isWavesEqual(waveA, waveB, [tol])
 
     // compare data
     Duplicate/FREE waveA, comparator
-    comparator = waveA - waveB
-    comparator = comparator > tol || comparator < tol ? 1 : 0
+    comparator = abs(waveA - waveB)
+    comparator = comparator >= tol ? 1 : 0
     return (sum(comparator) == 0)
 End
 

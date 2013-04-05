@@ -153,3 +153,61 @@ Function utest_Wave_fConsec__tol()
 
     EXPECT_EQ(4, Wave_findConsec(w, 5, tol=0.02))
 End
+
+Function utest_Wave_equal__allzero()
+    // isWavesEqual -- equal if all zero
+    Make/N=10 a
+    Make/N=10 b
+    a = 0
+    b = 0
+
+    ASSERT_TRUE(isWavesEqual(a, b))
+End
+
+Function utest_Wave_equal__step()
+    // isWavesEqual -- equal if a step
+    Make/N=100 a
+    Make/N=100 b
+
+    a = 0
+    b = 0
+
+    a[50,60] = 4
+    b[50,60] = 4
+
+    ASSERT_TRUE(isWavesEqual(a, b))
+End
+
+Function utest_Wave_equal__diffsize()
+    // isWavesEqual -- fails if different sizes
+    Make/N=10 a
+    Make/N=11 b
+
+    a = 0
+    b = 0
+
+    ASSERT_FALSE(isWavesEqual(a, b))
+End
+
+Function utest_Wave_equal__diffcol()
+    // isWavesEqual -- fails if different sized columns
+    Make/N=(10, 5) a
+    Make/N=(10, 10) b
+
+    a = 0
+    b = 0
+
+    ASSERT_FALSE(isWavesEqual(a, b))
+End
+
+Function utest_Wave_equal__tol()
+    // isWavesEqual -- equal within tolerance
+    Make/N=1000 a
+    Make/N=1000 b
+
+    SetRandomSeed 0.5
+    a = 1                       // constant
+    b = a + enoise(-1, 1)       // random within tol
+
+    ASSERT_TRUE(isWavesEqual(a, b, tol=1.0))
+End
