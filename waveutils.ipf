@@ -277,16 +277,19 @@ End
 // EqualWaves returns true if either wave contains a zero point, so
 // does not work for comparing data!
 Function isWavesEqual(waveA, waveB, [tol])
-    Wave waveA, waveB
+    Wave/Z waveA, waveB
     Variable tol
 
-    if (ParamIsDefault(tol))
-        tol = 1e-12
+    if (!WaveExists(waveA) || !WaveExists(waveB))
+        return 0
     endif
-
     // compare data type and dimensions
     if (!EqualWaves(waveA, waveB, 514))
         return 0
+    endif
+
+    if (ParamIsDefault(tol))
+        tol = 1e-12
     endif
 
     // compare data

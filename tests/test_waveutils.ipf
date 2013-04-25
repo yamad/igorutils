@@ -211,3 +211,14 @@ Function utest_Wave_equal__tol()
 
     ASSERT_TRUE(isWavesEqual(a, b, tol=1.0))
 End
+
+Function utest_Wave_equal__nulls()
+    // isWavesEqual -- not equal if either wave is null
+    Wave/Z a = $""
+    Wave/Z b = $""
+    Make/N=10 c
+
+    ASSERT_FALSE(isWavesEqual(a, b))
+    ASSERT_FALSE(isWavesEqual(a, c))
+    ASSERT_FALSE(isWavesEqual(c, a))
+End
