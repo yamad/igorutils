@@ -40,4 +40,28 @@ Function Num_getUnitMagnitude(num)
     return map_key
 End
 
+Static Constant kTOLd = 1e-13          // double precision tolerance
+Function Nums_areEqual(numA, numB, [tol])
+	Variable numA, numB
+	Variable tol
+
+    if (ParamIsDefault(tol))
+        tol = kTOLd
+    endif
+
+	Variable typeA = numtype(numA)
+	Variable typeB = numtype(numB)
+	if (typeA != typeB)
+		return FALSE
+	else
+		if (typeA == 1)    // both values are either +/-Inf
+			return (numA == numB)
+		elseif (typeA == 2) // both values are NaN
+			return TRUE
+		else                    // compare values, within tolerance
+			return (abs(numA - numB) <= tol)
+		endif
+	endif
+End
+
 #endif
