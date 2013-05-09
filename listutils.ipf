@@ -1,7 +1,5 @@
 #pragma rtGlobals=1		// Use modern global access method.
 
-#pragma hide=1
-
 #ifndef LISTUTILS_INCLUDE
 #define LISTUTILS_INCLUDE
 
@@ -160,6 +158,24 @@ Function/S List_unique(list_in, [list_sep])
         if (!List_hasItem(new_list, curr_item))
             new_list = List_addItem(new_list, curr_item)
         endif
+    endfor
+    return new_list
+End
+
+Function/S List_reverse(list_in, [list_sep])
+    String list_in
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    Variable item_count = List_getLength(list_in)
+    Variable i
+
+    String new_list = ""
+    for (i=item_count-1; i>=0; i-=1)
+        new_list = List_addItem(new_list, List_getItem(list_in, i, list_sep=list_sep))
     endfor
     return new_list
 End
