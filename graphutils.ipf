@@ -6,13 +6,15 @@
 #define GRAPHUTILS_INCLUDE
 
 #include "waveutils"
+#include "colorutils"
 
 Function/S Graph_getListAll()
     return WinList("*", ";", "WIN:1")
 End
 
 Function/S Graph_getTopName()
-    return List_getItemByIndex(Graph_getListAll(), 0)
+    return WinName(0, 1)
+//    return List_getItemByIndex(Graph_getListAll(), 0)
 End
 
 // Return the name of a new empty graph named *graph_name*. If no name
@@ -77,20 +79,22 @@ Function/S Graph_getAxisList(graph_name, [type])
     return filtered_list
 End
 
-Function/S Graph_getTraceList(graph_name, [xaxis, yaxis])
+Function/S Graph_getTraceList([graph_name, xaxis, yaxis])
     // Return list of traces in a graph, optionally specified by axis
     String graph_name
     String xaxis, yaxis
 
-    String trace_list = TraceNameList(graph_name, ";", 1)
-
-    if (ParamIsDefault(xaxis))
+    if (ParamIsDefault(graph_name))
+        graph_name = Graph_getTopName()
+    endif
+    if (ParamIsDefault(xaxis) || isStringsEqual(xaxis, "all"))
         xaxis = ""
     endif
-    if (ParamIsDefault(yaxis))
+    if (ParamIsDefault(yaxis) || isStringsEqual(yaxis, "all"))
         yaxis = ""
     endif
 
+    String trace_list = TraceNameList(graph_name, ";", 1)
     // return full list if no filters are specified
     if (!isStringExists(xaxis) && !isStringExists(yaxis))
         return trace_list
@@ -112,5 +116,64 @@ Function/S Graph_getTraceList(graph_name, [xaxis, yaxis])
     endfor
     return filtered_list
 End
+
+Function/S Graph_getVisibleTraceList([graph_name, xaxis, yaxis])
+    String graph_name
+    String xaxis, yaxis
+
+    if (ParamIsDefault(graph_name))
+        graph_name = Graph_getTopName()
+    endif
+    if (ParamIsDefault(xaxis) || isStringsEqual(xaxis, "all"))
+        xaxis = ""
+    endif
+    if (ParamIsDefault(yaxis) || isStringsEqual(yaxis, "all"))
+        yaxis = ""
+    endif
+
+    String filtered_traces = Graph_getTraceList(graph_name=graph_name, xaxis=xaxis, yaxis=yaxis)
+    String visible_traces = TraceNameList(graph_name, ";", 1+4)
+
+    String result = ""
+    Variable i
+    Variable len = List_getLength(filtered_traces)
+    for (i=0; i<len; i+=1)
+        String tracename = List_getItem(filtered_traces, i)
+        if (WhichListItem(tracename, visible_traces) != -1)
+            result = List_addItem(result, tracename)
+        endif
+    endfor
+    return result
+End
+
+Function Graph_colorTraces(palette, [graph_name, xaxis, yaxis])
+    String palette
+    String graph_name
+    String xaxis
+    String yaxis
+
+    if (ParamIsDefault(graph_name))
+        graph_name = Graph_getTopName()
+    endif
+    if (ParamIsDefault(xaxis) || isStringsEqual(xaxis, "all"))
+        xaxis = ""
+    endif
+    if (ParamIsDefault(yaxis) || isStringsEqual(yaxis, "all"))
+        yaxis = ""
+    endif
+
+    String trace_list = Graph_getTraceList(graph_name=graph_name, xaxis=xaxis, yaxis=yaxis)
+    Variable i, j
+    Variable trace_count = List_getLength(trace_list)
+    Variable color_count = List_getLength(palette)
+
+    for (i=0; i<trace_count; i+=1)
+        Variable color = str2num(List_getItem(palette, mod(i,color_count)))
+        String trace = List_getItem(trace_list, i)
+        ModifyGraph/W=$graph_name rgb($trace)=(hexcolor_red(color), hexcolor_green(color), hexcolor_blue(color))
+    endfor
+End
+
+
 
 #endif
