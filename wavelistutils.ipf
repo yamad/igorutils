@@ -145,9 +145,9 @@ Function WaveList_average(wave_list, outwave_name)
 	Variable wave_count = List_getLength(wave_list)
 	outwave /= wave_count
 
-	//String outwave_note
-	//sprintf outwave_note, "AveragedWaves:%s", wave_list
-	//Note/K outwave, outwave_note
+	String outwave_note
+	sprintf outwave_note, "AveragedWaves:%s", List_compact(wave_list)
+	Note/K outwave, outwave_note
 End
 
 Function WaveList_avg_varpts(wave_list, outwave_name, outpts_name)

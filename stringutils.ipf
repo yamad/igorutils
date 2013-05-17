@@ -73,4 +73,34 @@ Function/S String_trim(string_in)
     return String_getRegexMatch(string_in, trim_re)
 End
 
+/// Returns the length of the shared prefix of strings str1 and str2.
+//
+// code ported from JUnit (http://github.com/junit-team/junit)
+Function String_findCommonPrefix(str1, str2)
+    String str1, str2
+
+    Variable len = min(strlen(str1), strlen(str2))
+    Variable res
+    for (res=0; res < len; res+=1)
+        if (!isStringsEqual(str1[res], str2[res]))
+            break
+        endif
+    endfor
+    return res
+End
+
+/// Returns the length of the shared suffix of strings str1 and str2.
+Function String_findCommonSuffix(str1, str2)
+    String str1, str2
+
+    Variable len = min(strlen(str1), strlen(str2))
+    Variable res
+    for (res=len; res > 0; res-=1)
+        if (!isStringsEqual(str1[res-1], str2[res-1]))
+            break
+        endif
+    endfor
+    return (len - res)
+End
+
 #endif

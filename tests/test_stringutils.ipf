@@ -43,3 +43,16 @@ Function utest_String__searchbackempty()
     ASSERT_EQ(-1, String_searchBack(input, "B"))
 End
 
+Function utest_String__findCommonPrefix()
+    // String_findCommonPrefix -- returns shared prefix length
+    EXPECT_EQ(0, String_findCommonPrefix("abc", "bcd"))
+    EXPECT_EQ(2, String_findCommonPrefix("abc", "abd"))
+    EXPECT_EQ(3, String_findCommonPrefix("abc", "abc"))
+End
+
+Function utest_String__findCommonSuffix()
+    //String_findCommonSuffix -- returns shared suffix length
+    EXPECT_EQ(0, String_findCommonSuffix("abc", "bcd"))
+    EXPECT_EQ(1, String_findCommonSuffix("abc", "bcc"))
+    EXPECT_EQ(3, String_findCommonSuffix("abc", "abc"))
+End
