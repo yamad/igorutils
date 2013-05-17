@@ -45,7 +45,7 @@ Function utest_Graph__trlist()
     // Graph_getTraceList -- gets list of all traces, if no axes specified
     Make foo, bar, baz
     AppendToGraph foo, bar, baz
-    ASSERT_STREQ("testwave;foo;bar;baz;", Graph_getTraceList("testgraph"))
+    ASSERT_STREQ("testwave;foo;bar;baz;", Graph_getTraceList())
 End
 
 Function utest_Graph__trlistx()
@@ -54,7 +54,7 @@ Function utest_Graph__trlistx()
     AppendToGraph/T=top/L=left2 foo
     AppendToGraph/T=top/R=right1 bar
     AppendToGraph/B=bottom2 baz
-    ASSERT_STREQ("foo;bar;", Graph_getTraceList("testgraph", xaxis="top"))
+    ASSERT_STREQ("foo;bar;", Graph_getTraceList(xaxis="top"))
 End
 
 Function utest_Graph__trlisty()
@@ -63,7 +63,7 @@ Function utest_Graph__trlisty()
     AppendToGraph/L=left2/B=bottom2 foo
     AppendToGraph/L=left2/B=bottom3 bar
     AppendToGraph/L=left3/T=top baz
-    ASSERT_STREQ("foo;bar;", Graph_getTraceList("testgraph", yaxis="left2"))
+    ASSERT_STREQ("foo;bar;", Graph_getTraceList(yaxis="left2"))
 End
 
 Function utest_Graph__trlistxy()
@@ -72,5 +72,5 @@ Function utest_Graph__trlistxy()
     AppendToGraph/L=left2/B=bottom2 foo
     AppendToGraph/L=left2/B=bottom2 bar
     AppendToGraph/L=left2/B=bottom3 baz
-    ASSERT_STREQ("foo;bar;", Graph_getTraceList("testgraph", yaxis="left2", xaxis="bottom2"))
+    ASSERT_STREQ("foo;bar;", Graph_getTraceList(yaxis="left2", xaxis="bottom2"))
 End
