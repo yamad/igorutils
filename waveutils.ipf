@@ -408,9 +408,9 @@ Function Wave_subtract(waveA, waveB, waveout_name)
     Wave waveA, waveB
     String waveout_name
 
-    Duplicate/O waveA, $(waveout_name)
-    Wave wave_out = $(waveout_name)
+    Duplicate/FREE waveA, wave_out
     wave_out = waveA - waveB
+    Wave_store(wave_out, waveout_name)
 End
 
 Function/S Wave_NumsToList(wave_in)
