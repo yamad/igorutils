@@ -147,7 +147,7 @@ Function WaveList_average(wave_list, outwave_name)
 
 	String outwave_note
 	sprintf outwave_note, "AveragedWaves:%s", List_compact(wave_list)
-	Note/K outwave, outwave_note
+	Note outwave, outwave_note
 End
 
 Function WaveList_avg_varpts(wave_list, outwave_name, outpts_name)
