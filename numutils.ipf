@@ -1,6 +1,8 @@
 #ifndef NUMUTILS_INCLUDE
 #define NUMUTILS_INCLUDE
 
+Strconstant NUM_REGEX = "([+-]?(?:(?:\\d+\\.\\d+)|(?:\\d+\\.?)|(?:\\.\\d+))(?:[Ee][+-]?\\d+)?)"
+
 Function isNaN(var)
     Variable var
     if (numtype(var) == 2)

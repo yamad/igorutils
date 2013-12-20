@@ -2,6 +2,7 @@
 #define WAVELIST_INCLUDE
 
 #include "waveutils"
+#include "tableutils"
 #include "datafolderutils"
 
 Function/S WaveList_getByPrefix(prefix)
@@ -134,13 +135,41 @@ Function WaveList_appendToGraph(wave_list, [graph_name])
     endfor
 End
 
+Function WaveList_edit(wave_list, [table_name])
+    String wave_list
+    String table_name
+
+    if (ParamIsDefault(table_name))
+        table_name = Table_create()
+    else
+        table_name = Table_create(table_name=table_name)
+    endif
+    WaveList_appendToTable(wave_list, table_name=table_name)
+End
+
+Function WaveList_appendToTable(wave_list, [table_name])
+    String wave_list
+    String table_name
+
+    if (ParamIsDefault(table_name))
+        table_name = Table_getTopName()
+    endif
+
+    Variable wave_count = List_getLength(wave_list)
+    Variable i
+    for (i=0; i<wave_count; i+=1)
+        Wave currwave = $(List_getItem(wave_list, i))
+        AppendToTable/W=$(table_name) currwave
+    endfor
+End
+
 Function WaveList_average(wave_list, outwave_name)
 	// Return a wave called `outwave_name` containing the average
 	// across all waves in a list of waves
 	String wave_list, outwave_name
 
-	Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, addWaves)
-	Wave outwave = $outwave_name
+	Wave outwave = Algo_ApplyToWaveListAndRetWave(wave_list, addWaves)
+    Wave_store(outwave, outwave_name, overwrite=1)
 
 	Variable wave_count = List_getLength(wave_list)
 	outwave /= wave_count
@@ -160,10 +189,10 @@ Function WaveList_avg_varpts(wave_list, outwave_name, outpts_name)
     // the number of valid (non-NaN) points that were averaged.
     String wave_list, outwave_name, outpts_name
 
-	Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, addWaves_noNaNs)
-	Algo_ApplyToWaveListAndRetWave(wave_list, outpts_name, countPoints_nonNaNs)
-	Wave outwave = $outwave_name
-    Wave outpts = $outpts_name
+	Wave outwave = Algo_ApplyToWaveListAndRetWave(wave_list, addWaves_noNaNs)
+	Wave outpts = Algo_ApplyToWaveListAndRetWave(wave_list, countPoints_nonNaNs)
+    Wave_store(outwave, outwave_name, overwrite=1)
+    Wave_store(outpts, outpts_name, overwrite=1)
 
     outwave /= outpts           // divide each point in outwave by the
                                 // number of valid points added for
@@ -271,21 +300,19 @@ Function WaveList_averageSubrange(wave_list, outwave_name, point_min, point_max)
 	Duplicate/O outwave_slice, outwave
 End
 
-Function Algo_ApplyToWaveListAndRetWave(wave_list, outwave_name, func)
+Function/WAVE Algo_ApplyToWaveListAndRetWave(wave_list, func)
 	// An algorithm encapsulation function that iterates over a list of waves, applying
 	// a function to each wave in turn, and creates an output wave with the result
 	//
 	// The function `func` must return a wave reference and take the input and output waves
 	// as wave references, in that order. See `protofunc_inoutwave` for the function prototype
 	String wave_list
-	String outwave_name
 	FUNCREF protofunc_inoutwave func
 
 	String currwave_name
 	currwave_name = List_getItem(wave_list, 0)
 
-    Duplicate/O $(currwave_name) $(outwave_name)
-	Wave outwave = $(outwave_name)
+    Duplicate/FREE $(currwave_name) outwave
 	outwave = 0
 
 	Variable wave_count = List_getLength(wave_list)

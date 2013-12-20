@@ -1,3 +1,4 @@
+
 #pragma rtGlobals=1		// Use modern global access method.
 
 #ifndef LISTUTILS_INCLUDE
@@ -336,6 +337,5 @@ Static Function List_findCommonPrefix(list_in, [list_sep])
     endfor
     return prefix_len
 End
-
 
 #endif

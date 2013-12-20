@@ -146,6 +146,35 @@ Function/S Graph_getVisibleTraceList([graph_name, xaxis, yaxis])
     return result
 End
 
+/// Return list of all waves in graph, optionally specified by axis
+Function/S Graph_getWaveList([graph_name, xaxis, yaxis])
+    String graph_name
+    String xaxis, yaxis
+
+    if (ParamIsDefault(graph_name))
+        graph_name = Graph_getTopName()
+    endif
+    if (ParamIsDefault(xaxis) || isStringsEqual(xaxis, "all"))
+        xaxis = ""
+    endif
+    if (ParamIsDefault(yaxis) || isStringsEqual(yaxis, "all"))
+        yaxis = ""
+    endif
+
+    String traces = Graph_getTraceList(graph_name=graph_name, xaxis=xaxis, yaxis=yaxis)
+
+    String result = ""
+    Variable i
+    Variable len = List_getLength(traces)
+    for (i=0; i<len; i+=1)
+        String tracename = List_getItem(traces, i)
+        Wave trace_wv = TraceNameToWaveRef(graph_name, tracename)
+        result = List_addItem(result, Wave_getPath(trace_wv))
+    endfor
+    result = List_unique(result)
+    return result
+End
+
 Function Graph_colorTraces(palette, [graph_name, xaxis, yaxis])
     String palette
     String graph_name
@@ -173,7 +202,5 @@ Function Graph_colorTraces(palette, [graph_name, xaxis, yaxis])
         ModifyGraph/W=$graph_name rgb($trace)=(hexcolor_red(color), hexcolor_green(color), hexcolor_blue(color))
     endfor
 End
-
-
 
 #endif

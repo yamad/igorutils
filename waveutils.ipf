@@ -6,6 +6,8 @@
 #include "dictutils"
 #include "refpathutils"
 
+// TODO: write general wave extraction routine
+
 Function Wave_appendRow(wave_in)
     // Add a new row to a wave and return the index of the new row
     Wave wave_in
@@ -317,7 +319,7 @@ End
 // Built-in functions like Resample are supposed to be able to handle
 // this, but the options were confusing to me. See also the help topic
 // "Decimation by Smoothing"
-Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
+Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends, start, stop])
     Wave wave_in
     String waveout_name         // name of wave to save results to
 
@@ -326,15 +328,27 @@ Function Wave_decimate(wave_in, x_interval, x_avg, waveout_name, [no_ends])
     Variable x_avg              // size (in x units) of window to average
                                 // over for each point
     Variable no_ends            //
+    Variable start
+    Variable stop
 
     if (ParamIsDefault(no_ends))
         no_ends = 0
     endif
 
-    Variable orig_start = DimOffset(wave_in, 0)
+    Variable orig_start, orig_end
     Variable orig_delta = DimDelta(wave_in, 0)
     Variable orig_size = DimSize(wave_in, 0)
-    Variable orig_end = orig_size*orig_delta + orig_start
+
+    if (ParamIsDefault(start))
+        orig_start = DimOffset(wave_in, 0)
+    else
+        orig_start = start
+    endif
+    if (ParamIsDefault(stop))
+        orig_end = orig_size*orig_delta + orig_start
+    else
+        orig_end = stop
+    endif
 
     Variable half_window = x_avg / 2
     // Do not allow upsampling or interval values of 0
