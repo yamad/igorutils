@@ -222,3 +222,47 @@ Function utest_Wave_equal__nulls()
     ASSERT_FALSE(isWavesEqual(a, c))
     ASSERT_FALSE(isWavesEqual(c, a))
 End
+
+Function utest_Wave_removeRows__1row()
+    // Wave_removeRows -- removes a row at given index
+    Make/N=10 a
+    a = p
+    Wave_removeRows(a, 1, 1)
+    EXPECT_EQ(9, Wave_getRowCount(a))
+    EXPECT_EQ(a[0], 0)
+    EXPECT_EQ(a[1], 2)
+End
+
+Function utest_Wave_removeRows__nrows()
+    Make/N=10 a
+    a = p
+    Wave_removeRows(a, 0, 4)
+    EXPECT_EQ(5, Wave_getRowCount(a))
+    EXPECT_EQ(a[0], 5)
+    EXPECT_EQ(a[4], 9)
+End
+
+Function utest_Wave_removeRows__2d()
+    Make/N=(10,2) a
+    a = p*(q+1)
+    Wave_removeRows(a, 1, 2)
+    EXPECT_EQ(8, Wave_getRowCount(a))
+    EXPECT_EQ(a[1][0], 3)
+    EXPECT_EQ(a[1][1], 6)
+End
+
+Function utest_Wave_removeRows__flipped()
+    // Wave_removeRows -- no op for start past end index
+    Make/N=10 a
+    a = p
+    Wave_removeRows(a, 4, 0)
+    EXPECT_EQ(10, Wave_getRowCount(a))
+End
+
+Function utest_Wave_removeRows__bounds()
+    // Wave_removeRows -- out of bounds
+    Make/N=10 a
+    a = p
+    Wave_removeRows(a, -1, 10)
+    EXPECT_EQ(0, Wave_getRowCount(a))
+End

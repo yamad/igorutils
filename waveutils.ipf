@@ -24,6 +24,18 @@ Function Wave_appendRows(wave_in, number_rows_to_add)
     return Wave_getLastRowIndex(wave_in)
 End
 
+Function Wave_removeRows(wave_in, start_i, end_i)
+    // Removes rows from the start index *start_i* to the end index
+    // *end_i* inclusive
+    Wave wave_in
+    Variable start_i, end_i
+
+    Variable last_i = Wave_getLastRowIndex(wave_in)
+    start_i = start_i >= 0 ? start_i : 0
+    end_i = end_i <= last_i ? end_i : last_i
+    DeletePoints/M=0 start_i, (end_i - start_i + 1), wave_in
+End
+
 Function Wave_appendColumns(wave_in, add_n)
     Wave wave_in
     Variable add_n
