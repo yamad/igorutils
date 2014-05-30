@@ -722,4 +722,10 @@ Function Wave_findConsec(wave_in, num, [start_pt, tol])
     return -1
 End
 
+Function Wave_mean(wvin, pbeg, pend)
+    Wave wvin
+    Variable pbeg, pend
+    return mean(wvin, pnt2x(wvin, pbeg), pnt2x(wvin, pend))
+End
+
 #endif
