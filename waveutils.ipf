@@ -227,7 +227,7 @@ End
 // @param overwrite (default: false) if "true", overwrites existing waves
 // @returns 0, if successful. -1, for error.
 //
-// TODO: allow for paths that do not exist yet
+// TODO: allow for paths/datafolders that do not exist yet
 Function Wave_store(wave_in, path, [overwrite])
     Wave wave_in
     String path
@@ -245,7 +245,8 @@ Function Wave_store(wave_in, path, [overwrite])
     endif
 
     if (overwrite && WaveExists($(new_path)))
-        KillWaves $(new_path)
+        Duplicate/O wave_in, $(new_path)
+        return 0
     endif
 
     if (!WaveExists($(new_path)))
