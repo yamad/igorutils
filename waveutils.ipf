@@ -623,6 +623,12 @@ Function Wave_pruneNaN(wave_in, outwave_name)
     Extract/O wave_in, $(outwave_name), (!isNaN(wave_in))
 End
 
+Function/WAVE WaveW_pruneNaN(wave_in)
+    Wave wave_in
+    Extract/FREE/O wave_in, res, (!isNaN(wave_in))
+    return res
+End
+
 Function/WAVE Wave_indexNonNaN(wave_in)
     Wave wave_in
     Extract/FREE/INDX wave_in, res, (!isNaN(wave_in))
