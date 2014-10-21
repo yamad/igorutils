@@ -263,10 +263,7 @@ Function Wave_saveSlice(wave_in, start_pt, end_pt, waveout_name)
     String waveout_name
 
     Wave wave_out = Wave_getSlice(wave_in, start_pt, end_pt)
-    if (WaveExists($(waveout_name)))
-        KillWaves $(waveout_name)
-    endif
-    MoveWave wave_out, $(waveout_name)
+    Wave_store(wave_out, waveout_name, overwrite=1)
 End
 
 Function Wave_saveSliceFromGraph(waveout_name)
