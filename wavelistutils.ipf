@@ -168,15 +168,24 @@ Function WaveList_average(wave_list, outwave_name)
 	// across all waves in a list of waves
 	String wave_list, outwave_name
 
-	Wave outwave = Algo_ApplyToWaveListAndRetWave(wave_list, addWaves)
-    Wave_store(outwave, outwave_name, overwrite=1)
-
 	Variable wave_count = List_getLength(wave_list)
+    if (wave_count <= 0)
+        return 0
+    endif
+
+    Wave wv = $(List_getItem(wave_list, 0))
+    Duplicate/FREE wv, outwave
+    Variable i
+    for (i=1; i<wave_count; i+=1)
+        Wave wv = $(List_getItem(wave_list, i))
+        outwave += wv
+    endfor
 	outwave /= wave_count
 
 	String outwave_note
 	sprintf outwave_note, "AveragedWaves:%s", List_compact(wave_list)
 	Note outwave, outwave_note
+    Wave_store(outwave, outwave_name, overwrite=1)
 End
 
 Function WaveList_avg_varpts(wave_list, outwave_name, outpts_name)
