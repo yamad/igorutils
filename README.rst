@@ -4,23 +4,24 @@
 
 Utility modules for WaveMetrics' `Igor Pro`_
 
-`igorutils` aims to provide a set of reusable modules that present a
-consistent and clear API for writing code in `Igor Pro`_.
+`igorutils` provides a set of reusable modules with a consistent and
+clear API for writing code in `Igor Pro`_.
 
 Project Goals
 =============
 
 `Igor Pro`_ is a scientifc graphing and data analysis program that
 includes extensive programming capabilities. Igor provides a set of
-built-in functions and operations that are powerful, but using these
-facilities is often confusing due to inconsistent naming/usage
-conventions that have crept into the Igor API over the
-years. Unfortunately, writing and reading code that uses this built-in
-API is much more difficult than it needs to be.
+built-in functions and operations that are powerful. Unfortunately,
+writing and reading code that uses this built-in API can be confusing
+due to inconsistent naming and programming conventions.
 
-`igorutils` is an attempt to make programming in Igor easier by
-encapsulating some of Igor's confusing syntax in a set of functions
-with consistent conventions and clear naming.
+`igorutils` is an attempt to make programming in Igor easier by:
+
+  * encapsulating obscure syntax in a set of functions with consistent
+    conventions and clear naming.
+  * providing utiliies for general purposes, such as for working with
+    units (`unitutils`) or lists of numbers (`rangespec`).
 
 For example, using the built-in API, appending a row to an Igor wave
 requires the following line of code::
