@@ -50,6 +50,26 @@ Function/S String_getRegexMatch(string_in, regex)
     return output
 End
 
+Function/S String_findRegex(string_in, regex)
+    String string_in
+    String regex
+
+    String full_regex = regex + "(.*)" // capture rest of string
+                                       // in last subpattern
+    String match = "", rest = ""
+    String res = ""
+
+    do
+        SplitString/E=(full_regex) string_in, match, rest
+        if (strlen(match) == 0)
+            break
+        endif
+        string_in = rest
+        res = List_addItem(res, match)
+    while(1)
+    return res
+End
+
 Function String_searchBack(string_in, find_str, [start])
     // Return index of last occurrence of `find_str` in `string_in`.
     //
