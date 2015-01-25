@@ -107,6 +107,18 @@ Function WaveList_kill(wave_list)
     endfor
 End
 
+Function WaveList_move(wave_list, path)
+    String wave_list
+    String path
+
+    Variable len = List_getLength(wave_list)
+    Variable i
+    for (i=0; i<len; i+=1)
+        Wave wv = $(List_getItem(wave_list, i))
+        MoveWave wv, $(path)
+    endfor
+End
+
 Function WaveList_display(wave_list, [graph_name])
     String wave_list
     String graph_name
