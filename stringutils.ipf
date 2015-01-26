@@ -51,10 +51,14 @@ Function/S String_getRegexMatch(string_in, regex)
 End
 
 Function/S String_findRegex(string_in, regex)
+    /// Return a list of all regex matches in a string
+    //
+    // Provided regex cannot have a capturing subpattern. Use `(?:)`
+    // to create noncapturing subpatterns, if necessary.
     String string_in
     String regex
 
-    String full_regex = regex + "(.*)" // capture rest of string
+    String full_regex = "(" + regex + ")(.*)" // capture rest of string
                                        // in last subpattern
     String match = "", rest = ""
     String res = ""
@@ -66,6 +70,59 @@ Function/S String_findRegex(string_in, regex)
         endif
         string_in = rest
         res = List_addItem(res, match)
+    while(1)
+    return res
+End
+
+Function/S String_pruneRegex(string_in, regex)
+    /// Remove/prune all strings matching a regex.
+    //
+    // Provided regex cannot have a capturing subpattern. Use `(?:)`
+    // to create noncapturing subpatterns, if necessary.
+    String string_in
+    String regex
+
+    String full_regex = "(.*?)" + regex + "(.*)"
+    String match = ""
+    String pre = "", post = ""
+    String res = ""
+
+    do
+        SplitString/E=(full_regex) string_in, pre, match, post
+        if (strlen(match) == 0)
+            res += string_in
+            break
+        endif
+        res += pre
+        string_in = post
+    while(1)
+    return res
+End
+
+Function/S String_replaceRegex(string_in, regex, replace)
+    /// Replace all regex matches with replacement string
+    //
+    // Performs simple string substitution (can't use backreferences
+    // in the replacement string). Provided regex cannot have a
+    // capturing subpattern. Use `(?:)` to create noncapturing
+    // subpatterns, if necessary.
+    String string_in
+    String regex
+    String replace
+
+    String full_regex = "(.*?)(" + regex + ")(.*)"
+    String match = ""
+    String pre = "", post = ""
+    String res = ""
+
+    do
+        SplitString/E=(full_regex) string_in, pre, match, post
+        if (strlen(match) == 0)
+            res += string_in
+            break
+        endif
+        res += pre + replace
+        string_in = post
     while(1)
     return res
 End
