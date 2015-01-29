@@ -165,6 +165,30 @@ Function/S List_unique(list_in, [list_sep])
     return new_list
 End
 
+/// Return list of items in list A, but not list B (aka set difference).
+//
+// Treats lists as sets (no duplicates) and returns A-B.
+Function/S List_difference(listA_in, listB_in, [list_sep])
+    String listA_in, listB_in
+    String list_sep
+
+    if (ParamIsDefault(list_sep))
+        list_sep = LISTSEP
+    endif
+
+    Variable i
+    Variable item_count = List_getLength(listA_in, list_sep=list_sep)
+
+    String new_list = ""
+    for (i=0; i<item_count; i+=1)
+        String curr_item = List_getItem(listA_in, i, list_sep=list_sep)
+        if (!List_hasItem(listB_in, curr_item, list_sep=list_sep))
+            new_list = List_addItem(new_list, curr_item, list_sep=list_sep)
+        endif
+    endfor
+    return new_list
+End
+
 Function/S List_reverse(list_in, [list_sep])
     String list_in
     String list_sep
