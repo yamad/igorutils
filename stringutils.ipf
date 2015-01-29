@@ -53,12 +53,12 @@ End
 Function/S String_findRegex(string_in, regex)
     /// Return a list of all regex matches in a string
     //
-    // Provided regex cannot have a capturing subpattern. Use `(?:)`
+    // Provided regex must have one capturing subpattern. Use `(?:)`
     // to create noncapturing subpatterns, if necessary.
     String string_in
     String regex
 
-    String full_regex = "(" + regex + ")(.*)" // capture rest of string
+    String full_regex = regex + "(.*)" // capture rest of string
                                        // in last subpattern
     String match = "", rest = ""
     String res = ""
@@ -82,7 +82,7 @@ Function/S String_pruneRegex(string_in, regex)
     String string_in
     String regex
 
-    String full_regex = "(.*?)" + regex + "(.*)"
+    String full_regex = "(.*?)(" + regex + ")(.*)"
     String match = ""
     String pre = "", post = ""
     String res = ""
