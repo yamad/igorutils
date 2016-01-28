@@ -33,27 +33,39 @@ With the `igorutils` wave module, the code is clearer::
 Some particularly useful features
 =================================
 
- * `rangespec` -- a flexible format for specifying number ranges
-   (e.g. `1-3` --> `1;2;3`). particularly useful for specifying a
-   subset of items in a list.
- * `unit` -- SI units/prefixes and common derived
-   units. (e.g. `Unit_scaleWave(<wave>, 'pA')` will correctly rescale
-   wave values and units to picoamperes, and yell at you if you
-   provide incompatible units)
- * `refpath` -- easy object references. very useful for working across data folders
- * `color` -- nice color palettes from `D3`_ and `ColorBrewer`_. apply
-   a palette to all the lines in a graph with
-   `Graph_colorTraces(<palette>, [<graph>])`.
- * `List_compact` and `List_expand` -- simple
-   compression/decompression of a list by prefix
-   (e.g. "wave1;wave2;wave3" --> "wave{1;2;3}"). originally designed
-   to fit long lists into wave notes.
- * `Wave_store` -- save a wave to a given location. This is harder
-   to get right than it seems. Particularly useful for saving free
-   waves and in conjuction with `refpath` utilities
- * `wavelist` -- convenient creation and handling of lists of wave
-   (e.g. `WaveList_average(<list>, <output_path>)` stores a wave at
-   `output_path` containing the average across waves in the `list`)
+  ``rangespec`` module
+    a flexible format for specifying number ranges (e.g. ``1-3`` -->
+    ``1;2;3``). particularly useful for specifying a subset of items in
+    a list.
+
+  ``unit`` module
+    SI units/prefixes and common derived
+    units. (e.g. ``Unit_scaleWave(<wave>, 'pA')`` will correctly rescale
+    wave values and units to picoamperes, and yell at you if you
+    provide incompatible units)
+
+  ``refpath`` module
+    easy object references. very useful for working across data folders
+
+  ``color`` utilities
+    nice color palettes from `D3`_ and `ColorBrewer`_. apply a
+    palette to all the lines in a graph with
+    ``Graph_colorTraces(<palette>, [<graph>])``.
+
+  ``List_compact`` and ``List_expand``
+    simple compression/decompression of a list by prefix
+    (e.g. "wave1;wave2;wave3" --> "wave{1;2;3}"). originally designed
+    to fit long lists into wave notes.
+
+  ``Wave_store``
+    save a wave to a given location. This is harder to get right than
+    it seems. Particularly useful for saving free waves and in
+    conjuction with `refpath` utilities
+
+  ``wavelist`` module
+    convenient creation and handling of lists of wave
+    (e.g. ``WaveList_average(<list>, <output_path>)`` stores a wave at
+    ``output_path`` containing the average across waves in the ``list``)
 
 See the documentation in the code and the tests for more information.
 
